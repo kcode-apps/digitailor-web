@@ -45,7 +45,7 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
+    (['header', 'footer'] as const).map((global) =>
       payload.updateGlobal({
         slug: global,
         data: {
