@@ -61,6 +61,8 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    // Auto-sync schema in dev (Supabase session connection). Use migrations in production.
+    push: process.env.NODE_ENV !== 'production',
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

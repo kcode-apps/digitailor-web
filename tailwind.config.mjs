@@ -6,11 +6,17 @@ const config = {
         DEFAULT: {
           css: [
             {
-              '--tw-prose-body': 'var(--text)',
-              '--tw-prose-headings': 'var(--text)',
+              '--tw-prose-body': 'var(--foreground)',
+              '--tw-prose-headings': 'var(--foreground)',
+              fontFamily: 'var(--font-body), sans-serif',
               h1: {
-                fontWeight: 'normal',
+                fontFamily: 'var(--font-display), serif',
+                fontWeight: '400',
                 marginBottom: '0.25em',
+              },
+              h2: {
+                fontFamily: 'var(--font-display), serif',
+                fontWeight: '400',
               },
             },
           ],
