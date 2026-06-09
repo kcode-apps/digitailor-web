@@ -22,7 +22,7 @@ const BeforeDashboard: React.FC = () => {
       </p>
       <ul className={`${baseClass}__instructions`}>
         <li>
-          Edit site-wide content under <strong>Site</strong>: Homepage, About, Site Settings, Header,
+          Edit site-wide content under <strong>Site</strong>: Home Page, About Page, Site Settings, Header,
           and Footer.
         </li>
         <li>

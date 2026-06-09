@@ -8,7 +8,7 @@ import { revalidateHomepage } from './hooks/revalidateHomepage'
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
-  label: 'Homepage',
+  label: 'Home Page',
   admin: {
     group: 'Site',
   },

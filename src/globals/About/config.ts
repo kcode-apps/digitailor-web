@@ -4,7 +4,7 @@ import { revalidateAbout } from './hooks/revalidateAbout'
 
 export const About: GlobalConfig = {
   slug: 'about',
-  label: 'About',
+  label: 'About Page',
   admin: {
     group: 'Site',
   },
