@@ -1,4 +1,4 @@
-import type { Page, Post } from '@/payload-types'
+import type { Page, Project } from '@/payload-types'
 
 export type CMSLinkData = {
   type?: ('reference' | 'custom') | null
@@ -9,8 +9,8 @@ export type CMSLinkData = {
         value: number | Page
       } | null)
     | ({
-        relationTo: 'posts'
-        value: number | Post
+        relationTo: 'projects'
+        value: number | Project
       } | null)
   url?: string | null
   label?: string | null
@@ -23,7 +23,7 @@ export function resolveLinkHref(link?: CMSLinkData | null): string | null {
     const { relationTo, value } = link.reference
 
     if (typeof value === 'object' && value.slug) {
-      const prefix = relationTo !== 'pages' ? `/${relationTo}` : ''
+      const prefix = relationTo === 'pages' ? '' : `/${relationTo}`
       return `${prefix}/${value.slug}`
     }
   }

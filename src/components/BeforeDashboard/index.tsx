@@ -16,28 +16,38 @@ const BeforeDashboard: React.FC = () => {
       <Banner className={`${baseClass}__banner`} type="success">
         <h4>Welcome to DIGITAILOR CMS</h4>
       </Banner>
-      Here&apos;s what to do next:
+      <p className={`${baseClass}__intro`}>
+        This admin panel manages the DIGITAILOR marketing site. Content is stored in the database
+        and served on the frontend automatically.
+      </p>
       <ul className={`${baseClass}__instructions`}>
+        <li>
+          Edit site-wide content under <strong>Site</strong>: Homepage, Site Settings, Header, and
+          Footer.
+        </li>
+        <li>
+          Manage <strong>Pages</strong> for fixed routes like About and Contact.
+        </li>
+        <li>
+          Add case studies under <strong>Projects</strong> — they appear on <code>/projects</code>.
+        </li>
         {seedEnabled ? (
           <li>
             <SeedButton />
-            {' to reset local demo data (destructive), then '}
+            {' to load local demo content (destructive), then '}
             <a href="/" target="_blank">
-              visit your website
+              preview the site
             </a>
             .
           </li>
         ) : (
           <li>
-            Edit globals under <strong>Site</strong> (Homepage, Site Settings, Header, Footer) and
-            pages under <strong>Pages</strong>.
+            <a href="/" target="_blank">
+              Preview the site
+            </a>{' '}
+            after saving changes.
           </li>
         )}
-        <li>
-          Schema: develop with push locally, then run{' '}
-          <code>pnpm db:migrate:create</code> before deploying. Production uses{' '}
-          <code>pnpm start:prod</code> (migrate + start).
-        </li>
         <li>Do not enable seed in production.</li>
       </ul>
     </div>

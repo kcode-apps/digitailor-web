@@ -1,5 +1,5 @@
 import { SiteFooter } from '@/components/layout/SiteFooter/SiteFooter'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobal } from '@/lib/cms/queries'
 import React from 'react'
 
 export async function SiteFooterLoader() {

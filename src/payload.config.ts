@@ -4,10 +4,9 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
+import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
@@ -69,15 +68,15 @@ export default buildConfig({
     },
     /*
      * Schema workflow:
-     * - Dev (NODE_ENV !== production): push syncs DB from Payload config on startup.
-     * - Prod: push is off. Run `pnpm db:migrate` before start (see `start:prod`).
-     * - After schema changes in dev: `pnpm db:migrate:create`, commit src/migrations/, deploy.
+     * - Dev: push enabled — schema syncs from Payload config on startup.
+     *   After schema changes: stop dev, run `npm run db:migrate:create`, then `npm run db:migrate`.
+     * - Prod: push disabled; run `npm run start:prod` (migrate + start).
      * - Seed: dev-only (`SEED_ENABLED=true`). Never run seed in production.
      */
     push: process.env.NODE_ENV !== 'production',
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Projects, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [SiteSettings, Homepage, Header, Footer],
   plugins,

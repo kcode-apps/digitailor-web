@@ -1,36 +1,30 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { aboutPageData } from '@/lib/cms/pages/aboutPageData'
-import { home } from './home'
+import { projectSeedData } from '@/lib/cms/projects/projectSeedData'
 import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
 import { homepageClearData, homepageSeedData, siteSettingsStarterData } from '@/lib/cms/defaults'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
-import { post1 } from './post-1'
-import { post2 } from './post-2'
-import { post3 } from './post-3'
 
-const collections: CollectionSlug[] = [
-  'categories',
-  'media',
+const collectionsToClear: CollectionSlug[] = [
   'pages',
-  'posts',
+  'projects',
+  'media',
   'forms',
   'form-submissions',
-  'search',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const SEED_IMAGE_URLS = [
+  'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post1.webp',
+  'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post2.webp',
+  'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post3.webp',
+  'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-hero1.webp',
+]
 
-const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
-
-// Next.js revalidation errors are normal when seeding the database without a server running
-// i.e. running `yarn seed` locally instead of using the admin UI within an active app
-// The app is not running to revalidate the pages and so the API routes are not available
-// These error messages can be ignored: `Error hitting revalidate route for...`
 export const seed = async ({
   payload,
   req,
@@ -38,34 +32,22 @@ export const seed = async ({
   payload: Payload
   req: PayloadRequest
 }): Promise<void> => {
-  payload.logger.info('Seeding database...')
+  payload.logger.info('Seeding DIGITAILOR demo data...')
 
-  // we need to clear the media directory before seeding
-  // as well as the collections and globals
-  // this is because while `yarn seed` drops the database
-  // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
 
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
-      data: {
-        navItems: [],
-      },
+      data: { navItems: [] },
       depth: 0,
-      context: {
-        disableRevalidate: true,
-      },
+      context: { disableRevalidate: true },
     }),
     payload.updateGlobal({
       slug: 'footer',
-      data: {
-        navItems: [],
-      },
+      data: { navItems: [] },
       depth: 0,
-      context: {
-        disableRevalidate: true,
-      },
+      context: { disableRevalidate: true },
     }),
     payload.updateGlobal({
       slug: 'homepage',
@@ -74,13 +56,11 @@ export const seed = async ({
         heroImage: null,
       } as Record<string, unknown>,
       depth: 0,
-      context: {
-        disableRevalidate: true,
-      },
+      context: { disableRevalidate: true },
     }),
   ])
 
-  const collectionsWithoutMedia = collections.filter((collection) => collection !== 'media')
+  const collectionsWithoutMedia = collectionsToClear.filter((collection) => collection !== 'media')
 
   await Promise.all(
     collectionsWithoutMedia.map((collection) =>
@@ -91,49 +71,18 @@ export const seed = async ({
   await payload.db.deleteMany({ collection: 'media', req, where: {} })
 
   await Promise.all(
-    collections
+    collectionsToClear
       .filter((collection) => Boolean(payload.collections[collection].config.versions))
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
-  payload.logger.info(`— Seeding demo author and user...`)
-
-  await payload.delete({
-    collection: 'users',
-    depth: 0,
-    where: {
-      email: {
-        equals: 'demo-author@example.com',
-      },
-    },
-  })
-
   payload.logger.info(`— Seeding media...`)
 
-  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post1.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post2.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-post3.webp',
-    ),
-    fetchFileByURL(
-      'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/3.x/templates/website/src/endpoints/seed/image-hero1.webp',
-    ),
-  ])
+  const [image1Buffer, image2Buffer, image3Buffer, heroBuffer] = await Promise.all(
+    SEED_IMAGE_URLS.map((url) => fetchFileByURL(url)),
+  )
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
-    payload.create({
-      collection: 'users',
-      data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
-      },
-    }),
+  const [image1Doc, image2Doc, image3Doc, imageHeroDoc] = await Promise.all([
     payload.create({
       collection: 'media',
       data: image1,
@@ -152,74 +101,11 @@ export const seed = async ({
     payload.create({
       collection: 'media',
       data: imageHero1,
-      file: hero1Buffer,
+      file: heroBuffer,
     }),
-    categories.map((category) =>
-      payload.create({
-        collection: 'categories',
-        data: {
-          title: category,
-          slug: category,
-        },
-      }),
-    ),
   ])
 
-  payload.logger.info(`— Seeding posts...`)
-
-  // Do not create posts with `Promise.all` because we want the posts to be created in order
-  // This way we can sort them by `createdAt` or `publishedAt` and they will be in the expected order
-  const post1Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
-  })
-
-  const post2Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
-  })
-
-  const post3Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
-  })
-
-  // update each post with related posts
-  await payload.update({
-    id: post1Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post2Doc.id, post3Doc.id],
-    },
-  })
-  await payload.update({
-    id: post2Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post3Doc.id],
-    },
-  })
-  await payload.update({
-    id: post3Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post2Doc.id],
-    },
-  })
-
-  payload.logger.info(`— Seeding contact form...`)
+  payload.logger.info(`— Seeding contact form and pages...`)
 
   const contactForm = await payload.create({
     collection: 'forms',
@@ -227,18 +113,11 @@ export const seed = async ({
     data: contactFormData,
   })
 
-  payload.logger.info(`— Seeding pages...`)
-
-  const [_, contactPage, aboutPage] = await Promise.all([
+  await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: home({ heroImage: imageHomeDoc, metaImage: image2Doc }),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+      data: contactPageData({ contactForm }),
     }),
     payload.create({
       collection: 'pages',
@@ -247,14 +126,25 @@ export const seed = async ({
     }),
   ])
 
+  payload.logger.info(`— Seeding projects...`)
+
+  await Promise.all(
+    projectSeedData([image1Doc, image2Doc, image3Doc]).map((data) =>
+      payload.create({
+        collection: 'projects',
+        depth: 0,
+        context: { disableRevalidate: true },
+        data,
+      }),
+    ),
+  )
+
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
-      data: {
-        navItems: defaultHeaderNavItems(),
-      },
+      data: { navItems: defaultHeaderNavItems() },
     }),
     payload.updateGlobal({
       slug: 'site-settings',
@@ -264,12 +154,12 @@ export const seed = async ({
       slug: 'homepage',
       data: {
         ...homepageSeedData([image1Doc.id, image2Doc.id, image3Doc.id, image1Doc.id, image2Doc.id]),
-        heroImage: imageHomeDoc.id,
+        heroImage: imageHeroDoc.id,
       },
     }),
   ])
 
-  payload.logger.info('Seeded database successfully!')
+  payload.logger.info('Seeded DIGITAILOR demo data successfully!')
 }
 
 async function fetchFileByURL(url: string): Promise<File> {

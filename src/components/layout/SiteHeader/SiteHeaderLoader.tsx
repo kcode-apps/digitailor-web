@@ -1,5 +1,5 @@
 import { SiteHeader } from '@/components/layout/SiteHeader/SiteHeader'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobal } from '@/lib/cms/queries'
 import React from 'react'
 
 export async function SiteHeaderLoader() {
