@@ -24,6 +24,8 @@ export const getCachedGlobal = <T extends Global>(slug: T, depth = 0) =>
 
 export const getCachedHomepage = (depth = 0) => getCachedGlobal('homepage', depth)
 
+export const getCachedAbout = (depth = 0) => getCachedGlobal('about', depth)
+
 async function findPageBySlug(slug: string, draft: boolean): Promise<Page | null> {
   const payload = await getPayload({ config: configPromise })
 

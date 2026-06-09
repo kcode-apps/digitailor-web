@@ -1,19 +1,18 @@
-import type { Page } from '@/payload-types'
+import type { About as AboutType } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { Check } from 'lucide-react'
 import React from 'react'
 
 type AboutPageProps = {
-  page: Pick<Page, 'title' | 'aboutContent'>
+  about: AboutType
 }
 
-export const AboutPage: React.FC<AboutPageProps> = ({ page }) => {
-  const content = page.aboutContent
-  const headline = content?.headline || page.title
-  const bio = content?.bio
-  const credentials = content?.credentials || []
-  const sidebarItems = content?.sidebarItems || []
+export const AboutPage: React.FC<AboutPageProps> = ({ about }) => {
+  const headline = about.headline
+  const bio = about.bio
+  const credentials = about.credentials || []
+  const sidebarItems = about.sidebarItems || []
 
   return (
     <section className="border-b border-warm-border/60">
@@ -21,12 +20,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ page }) => {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
             <div className="relative mx-auto aspect-[3/4] max-w-sm overflow-hidden bg-beige-dark lg:mx-0 lg:max-w-none">
-              {content?.portrait && typeof content.portrait === 'object' ? (
+              {about.portrait && typeof about.portrait === 'object' ? (
                 <Media
                   fill
                   imgClassName="object-cover"
                   priority
-                  resource={content.portrait}
+                  resource={about.portrait}
                   size="(max-width: 1024px) 100vw, 33vw"
                 />
               ) : (
@@ -38,9 +37,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ page }) => {
           </div>
 
           <div className="lg:col-span-5">
-            <p className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-warm-gray">
-              About Devmini
-            </p>
+            {about.overline && (
+              <p className="font-sans text-xs font-medium uppercase tracking-[0.16em] text-warm-gray">
+                {about.overline}
+              </p>
+            )}
             <h1 className="mt-4 font-serif text-3xl leading-[1.15] text-charcoal md:text-4xl lg:text-5xl">
               {headline}
             </h1>

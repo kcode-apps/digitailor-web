@@ -2,10 +2,14 @@ import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
-import { aboutPageData } from '@/lib/cms/pages/aboutPageData'
 import { projectSeedData } from '@/lib/cms/projects/projectSeedData'
 import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
-import { homepageClearData, homepageSeedData, siteSettingsStarterData } from '@/lib/cms/defaults'
+import {
+  aboutStarterData,
+  homepageClearData,
+  homepageSeedData,
+  siteSettingsStarterData,
+} from '@/lib/cms/defaults'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
@@ -55,6 +59,12 @@ export const seed = async ({
         ...homepageClearData(),
         heroImage: null,
       } as Record<string, unknown>,
+      depth: 0,
+      context: { disableRevalidate: true },
+    }),
+    payload.updateGlobal({
+      slug: 'about',
+      data: aboutStarterData(),
       depth: 0,
       context: { disableRevalidate: true },
     }),
@@ -113,18 +123,11 @@ export const seed = async ({
     data: contactFormData,
   })
 
-  await Promise.all([
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: contactPageData({ contactForm }),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: aboutPageData(),
-    }),
-  ])
+  await payload.create({
+    collection: 'pages',
+    depth: 0,
+    data: contactPageData({ contactForm }),
+  })
 
   payload.logger.info(`— Seeding projects...`)
 

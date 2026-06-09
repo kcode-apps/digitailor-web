@@ -1,12 +1,24 @@
-import type { Field } from 'payload'
+import type { GlobalConfig } from 'payload'
 
-export const aboutContentField: Field = {
-  name: 'aboutContent',
-  type: 'group',
+import { revalidateAbout } from './hooks/revalidateAbout'
+
+export const About: GlobalConfig = {
+  slug: 'about',
+  label: 'About',
   admin: {
-    condition: (_, siblingData) => siblingData?.pageType === 'about',
+    group: 'Site',
+  },
+  access: {
+    read: () => true,
   },
   fields: [
+    {
+      name: 'overline',
+      type: 'text',
+      admin: {
+        description: 'Small label above the headline.',
+      },
+    },
     {
       name: 'headline',
       type: 'text',
@@ -36,6 +48,9 @@ export const aboutContentField: Field = {
           required: true,
         },
       ],
+      admin: {
+        initCollapsed: true,
+      },
     },
     {
       name: 'sidebarItems',
@@ -55,6 +70,12 @@ export const aboutContentField: Field = {
           type: 'textarea',
         },
       ],
+      admin: {
+        initCollapsed: true,
+      },
     },
   ],
+  hooks: {
+    afterChange: [revalidateAbout],
+  },
 }

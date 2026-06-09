@@ -22,14 +22,12 @@ const BeforeDashboard: React.FC = () => {
       </p>
       <ul className={`${baseClass}__instructions`}>
         <li>
-          Edit site-wide content under <strong>Site</strong>: Homepage, Site Settings, Header, and
-          Footer.
+          Edit site-wide content under <strong>Site</strong>: Homepage, About, Site Settings, Header,
+          and Footer.
         </li>
         <li>
-          Manage <strong>Pages</strong> for fixed routes like About and Contact.
-        </li>
-        <li>
-          Add case studies under <strong>Projects</strong> — they appear on <code>/projects</code>.
+          Manage flexible pages under <strong>Pages</strong> (e.g. Contact) and case studies under{' '}
+          <strong>Projects</strong>.
         </li>
         {seedEnabled ? (
           <li>

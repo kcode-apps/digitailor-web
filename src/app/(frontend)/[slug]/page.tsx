@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import React from 'react'
 
-import { AboutPage } from '@/components/about/AboutPage'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -31,16 +30,6 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   if (!page) {
     return <PayloadRedirects url={url} />
-  }
-
-  if (page.pageType === 'about') {
-    return (
-      <article>
-        <PayloadRedirects disableNotFound url={url} />
-        {draft && <LivePreviewListener />}
-        <AboutPage page={page} />
-      </article>
-    )
   }
 
   const { hero, layout } = page

@@ -10,6 +10,7 @@ import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
+import { About } from './globals/About/config'
 import { Homepage } from './globals/Homepage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
@@ -78,7 +79,7 @@ export default buildConfig({
   }),
   collections: [Pages, Projects, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [SiteSettings, Homepage, Header, Footer],
+  globals: [SiteSettings, Homepage, About, Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

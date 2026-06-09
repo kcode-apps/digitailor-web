@@ -71,6 +71,7 @@ export const siteDefaults = {
     ],
   },
   about: {
+    overline: 'About Devmini',
     headline: 'Where Fashion Expertise Meets Digital Innovation.',
     bio: 'Devmini brings deep fashion industry knowledge together with cutting-edge 3D and AI workflows — helping brands move from concept to campaign faster, with less waste and more creative control.',
     credentials: [
@@ -95,8 +96,6 @@ export const siteDefaults = {
     ],
   },
 }
-
-export const aboutDefaults = siteDefaults.about
 
 /** Starter data for seed + ensure only — not used by frontend components. */
 export function siteSettingsStarterData() {
@@ -154,5 +153,16 @@ export function homepageSeedData(mediaIds: number[]) {
       ...siteDefaults.outputs,
       cards,
     },
+  }
+}
+
+/** Starter data for seed + ensure only — not used by frontend components. */
+export function aboutStarterData() {
+  return {
+    overline: siteDefaults.about.overline,
+    headline: siteDefaults.about.headline,
+    bio: siteDefaults.about.bio,
+    credentials: siteDefaults.about.credentials,
+    sidebarItems: siteDefaults.about.sidebarItems,
   }
 }

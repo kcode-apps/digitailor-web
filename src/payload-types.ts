@@ -108,12 +108,14 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     homepage: Homepage;
+    about: About;
     header: Header;
     footer: Footer;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
@@ -158,10 +160,6 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  /**
-   * About uses a fixed layout. Standard uses hero + content blocks.
-   */
-  pageType: 'standard' | 'about';
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -206,24 +204,6 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[] | null;
-  aboutContent?: {
-    headline: string;
-    bio: string;
-    portrait?: (number | null) | Media;
-    credentials?:
-      | {
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
-    sidebarItems?:
-      | {
-          title: string;
-          description?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
   meta?: {
     title?: string | null;
     /**
@@ -980,7 +960,6 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  pageType?: T;
   hero?:
     | T
     | {
@@ -1010,26 +989,6 @@ export interface PagesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-      };
-  aboutContent?:
-    | T
-    | {
-        headline?: T;
-        bio?: T;
-        portrait?: T;
-        credentials?:
-          | T
-          | {
-              label?: T;
-              id?: T;
-            };
-        sidebarItems?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              id?: T;
-            };
       };
   meta?:
     | T
@@ -1629,6 +1588,35 @@ export interface Homepage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  /**
+   * Small label above the headline.
+   */
+  overline?: string | null;
+  headline: string;
+  bio: string;
+  portrait?: (number | null) | Media;
+  credentials?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  sidebarItems?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
 export interface Header {
@@ -1770,6 +1758,32 @@ export interface HomepageSelect<T extends boolean = true> {
               description?: T;
               id?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
+  overline?: T;
+  headline?: T;
+  bio?: T;
+  portrait?: T;
+  credentials?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  sidebarItems?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
