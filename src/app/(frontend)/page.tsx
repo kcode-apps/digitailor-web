@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { HomeHero } from '@/components/home/HomeHero'
 import { ImpactSection } from '@/components/home/ImpactSection'
 import { OutputsSection } from '@/components/home/OutputsSection'
-import { siteDefaults } from '@/lib/cms/defaults'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -24,11 +23,8 @@ export default async function HomePage() {
 export async function generateMetadata(): Promise<Metadata> {
   const homepage = await getCachedGlobal('homepage', 0)()
 
-  const title = [homepage.headlineLead, homepage.headlineAccent]
-    .filter(Boolean)
-    .join(' ')
-    .trim() || `${siteDefaults.hero.headlineLead} ${siteDefaults.hero.headlineAccent}`
-  const description = homepage.subheadline || siteDefaults.hero.subheadline
+  const title = [homepage.headline, homepage.headlineAccent].filter(Boolean).join(' ').trim()
+  const description = homepage.subheadline
 
   return {
     title,

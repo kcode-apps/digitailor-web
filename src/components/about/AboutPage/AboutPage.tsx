@@ -1,7 +1,6 @@
 import type { Page } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { aboutDefaults } from '@/lib/cms/defaults'
 import { Check } from 'lucide-react'
 import React from 'react'
 
@@ -11,12 +10,10 @@ type AboutPageProps = {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ page }) => {
   const content = page.aboutContent
-  const headline = content?.headline || page.title || aboutDefaults.headline
-  const bio = content?.bio || aboutDefaults.bio
-  const credentials = content?.credentials?.length ? content.credentials : aboutDefaults.credentials
-  const sidebarItems = content?.sidebarItems?.length
-    ? content.sidebarItems
-    : aboutDefaults.sidebarItems
+  const headline = content?.headline || page.title
+  const bio = content?.bio
+  const credentials = content?.credentials || []
+  const sidebarItems = content?.sidebarItems || []
 
   return (
     <section className="border-b border-warm-border/60">

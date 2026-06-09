@@ -1716,7 +1716,10 @@ export interface SiteSetting {
  */
 export interface Homepage {
   id: number;
-  headlineLead: string;
+  /**
+   * First part of the headline (sans-serif)
+   */
+  headline: string;
   /**
    * Rendered in serif italic
    */
@@ -1725,8 +1728,8 @@ export interface Homepage {
   /**
    * Full-width background image. Subject centered or right works best.
    */
-  heroImage: number | Media;
-  heroCta?: {
+  heroImage?: (number | null) | Media;
+  heroCta: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
@@ -1739,7 +1742,7 @@ export interface Homepage {
           value: number | Post;
         } | null);
     url?: string | null;
-    label?: string | null;
+    label: string;
   };
   taglineLead?: string | null;
   /**
@@ -1750,7 +1753,7 @@ export interface Homepage {
     overline?: string | null;
     headline: string;
     body?: string | null;
-    cta?: {
+    cta: {
       type?: ('reference' | 'custom') | null;
       newTab?: boolean | null;
       reference?:
@@ -1763,7 +1766,7 @@ export interface Homepage {
             value: number | Post;
           } | null);
       url?: string | null;
-      label?: string | null;
+      label: string;
     };
     cards?:
       | {
@@ -1771,7 +1774,10 @@ export interface Homepage {
            * e.g. Ecommerce, Campaign, Social Content
            */
           label: string;
-          image: number | Media;
+          /**
+           * Optional until media is uploaded in admin or via seed.
+           */
+          image?: (number | null) | Media;
           isVideo?: boolean | null;
           id?: string | null;
         }[]
@@ -1886,7 +1892,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  headlineLead?: T;
+  headline?: T;
   headlineAccent?: T;
   subheadline?: T;
   heroImage?: T;

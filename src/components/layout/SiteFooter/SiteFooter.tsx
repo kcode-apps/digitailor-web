@@ -4,7 +4,6 @@ import { CTAButton } from '@/components/layout/CTAButton'
 import { NavLink } from '@/components/layout/NavLink'
 import { SiteLogo } from '@/components/layout/SiteLogo'
 import { SocialLinks } from '@/components/layout/SocialLinks'
-import { siteDefaults } from '@/lib/cms/defaults'
 import { resolveLinkProps } from '@/lib/cms/resolveLink'
 import React from 'react'
 
@@ -14,9 +13,9 @@ type SiteFooterProps = {
 }
 
 export const SiteFooter: React.FC<SiteFooterProps> = ({ footer, siteSettings }) => {
-  const siteName = siteSettings.siteName || siteDefaults.siteName
-  const siteTagline = siteSettings.siteTagline || siteDefaults.siteTagline
-  const copyright = siteSettings.copyright || siteDefaults.copyright
+  const siteName = siteSettings.siteName
+  const siteTagline = siteSettings.siteTagline
+  const copyright = siteSettings.copyright
   const navItems = footer.navItems || []
   const social = siteSettings.socialLinks
 

@@ -5,7 +5,6 @@ import type { Header, SiteSetting } from '@/payload-types'
 import { CTAButton } from '@/components/layout/CTAButton'
 import { NavLink } from '@/components/layout/NavLink'
 import { SiteLogo } from '@/components/layout/SiteLogo'
-import { siteDefaults } from '@/lib/cms/defaults'
 import { resolveLinkProps } from '@/lib/cms/resolveLink'
 import { cn } from '@/utilities/ui'
 import { Menu, X } from 'lucide-react'
@@ -19,14 +18,10 @@ type SiteHeaderProps = {
 export const SiteHeader: React.FC<SiteHeaderProps> = ({ header, siteSettings }) => {
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const siteName = siteSettings.siteName || siteDefaults.siteName
-  const siteTagline = siteSettings.siteTagline || siteDefaults.siteTagline
+  const siteName = siteSettings.siteName
+  const siteTagline = siteSettings.siteTagline
   const navItems = header.navItems || []
-
-  const primaryCta =
-    resolveLinkProps(siteSettings.primaryCta) ||
-    resolveLinkProps(siteDefaults.primaryCta) ||
-    null
+  const primaryCta = resolveLinkProps(siteSettings.primaryCta)
 
   return (
     <header className="sticky top-0 z-50 border-b border-warm-border/60 bg-beige/95 backdrop-blur-sm">

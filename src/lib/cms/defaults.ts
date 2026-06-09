@@ -1,3 +1,4 @@
+/** Starter content for seed + ensure only — DB is the frontend source of truth. */
 export const siteDefaults = {
   siteName: 'DIGITAILOR',
   siteTagline: 'by Devmini',
@@ -9,7 +10,7 @@ export const siteDefaults = {
     newTab: false,
   },
   hero: {
-    headlineLead: 'Built for the Future of',
+    headline: 'Built for the Future of',
     headlineAccent: 'Fashion Production.',
     subheadline:
       'Helping fashion brands create faster workflows, scalable content, and smarter digital production through 3D and AI.',
@@ -96,3 +97,62 @@ export const siteDefaults = {
 }
 
 export const aboutDefaults = siteDefaults.about
+
+/** Starter data for seed + ensure only — not used by frontend components. */
+export function siteSettingsStarterData() {
+  return {
+    siteName: siteDefaults.siteName,
+    siteTagline: siteDefaults.siteTagline,
+    copyright: siteDefaults.copyright,
+    primaryCta: siteDefaults.primaryCta,
+  }
+}
+
+/** Starter data for seed + ensure only — not used by frontend components. */
+export function homepageStarterData() {
+  return {
+    headline: siteDefaults.hero.headline,
+    headlineAccent: siteDefaults.hero.headlineAccent,
+    subheadline: siteDefaults.hero.subheadline,
+    taglineLead: siteDefaults.hero.taglineLead,
+    taglineAccent: siteDefaults.hero.taglineAccent,
+    heroCta: siteDefaults.hero.heroCta,
+    outputs: siteDefaults.outputs,
+    impact: siteDefaults.impact,
+  }
+}
+
+/** Text-only homepage reset for seed clear — omits cards so media FKs can be deleted. */
+export function homepageClearData() {
+  return {
+    headline: siteDefaults.hero.headline,
+    headlineAccent: siteDefaults.hero.headlineAccent,
+    subheadline: siteDefaults.hero.subheadline,
+    taglineLead: siteDefaults.hero.taglineLead,
+    taglineAccent: siteDefaults.hero.taglineAccent,
+    heroCta: siteDefaults.hero.heroCta,
+    outputs: {
+      overline: siteDefaults.outputs.overline,
+      headline: siteDefaults.outputs.headline,
+      body: siteDefaults.outputs.body,
+      cta: siteDefaults.outputs.cta,
+      cards: [],
+    },
+    impact: siteDefaults.impact,
+  }
+}
+
+export function homepageSeedData(mediaIds: number[]) {
+  const cards = siteDefaults.outputs.cards.map((card, index) => ({
+    ...card,
+    image: mediaIds[index % mediaIds.length],
+  }))
+
+  return {
+    ...homepageStarterData(),
+    outputs: {
+      ...siteDefaults.outputs,
+      cards,
+    },
+  }
+}

@@ -22,13 +22,11 @@ export const SiteSettings: GlobalConfig = {
           name: 'siteName',
           type: 'text',
           required: true,
-          defaultValue: 'DIGITAILOR',
           admin: { width: '50%' },
         },
         {
           name: 'siteTagline',
           type: 'text',
-          defaultValue: 'by Devmini',
           admin: { width: '50%' },
         },
       ],
@@ -44,7 +42,6 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'copyright',
       type: 'text',
-      defaultValue: '© 2024 DIGITAILOR. All rights reserved.',
     },
   ],
   hooks: {

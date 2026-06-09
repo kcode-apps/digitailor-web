@@ -13,7 +13,9 @@ export const outputCardFields: Field[] = [
     name: 'image',
     type: 'upload',
     relationTo: 'media',
-    required: true,
+    admin: {
+      description: 'Optional until media is uploaded in admin or via seed.',
+    },
   },
   {
     name: 'isVideo',

@@ -4,6 +4,8 @@ import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { aboutPageData } from './about-page'
 import { home } from './home'
+import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
+import { homepageClearData, homepageSeedData, siteSettingsStarterData } from '@/lib/cms/defaults'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
@@ -44,25 +46,49 @@ export const seed = async ({
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear the database
+  await Promise.all([
+    payload.updateGlobal({
+      slug: 'header',
+      data: {
+        navItems: [],
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'footer',
+      data: {
+        navItems: [],
+      },
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        ...homepageClearData(),
+        heroImage: null,
+      } as Record<string, unknown>,
+      depth: 0,
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+  ])
+
+  const collectionsWithoutMedia = collections.filter((collection) => collection !== 'media')
+
   await Promise.all(
-    (['header', 'footer'] as const).map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
+    collectionsWithoutMedia.map((collection) =>
+      payload.db.deleteMany({ collection, req, where: {} }),
     ),
   )
 
-  await Promise.all(
-    collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
-  )
+  await payload.db.deleteMany({ collection: 'media', req, where: {} })
 
   await Promise.all(
     collections
@@ -227,55 +253,18 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'header',
       data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
-            },
-          },
-          {
-            link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
-            },
-          },
-        ],
+        navItems: defaultHeaderNavItems(),
       },
     }),
     payload.updateGlobal({
-      slug: 'footer',
+      slug: 'site-settings',
+      data: siteSettingsStarterData(),
+    }),
+    payload.updateGlobal({
+      slug: 'homepage',
       data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/3.x/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
-        ],
+        ...homepageSeedData([image1Doc.id, image2Doc.id, image3Doc.id, image1Doc.id, image2Doc.id]),
+        heroImage: imageHomeDoc.id,
       },
     }),
   ])

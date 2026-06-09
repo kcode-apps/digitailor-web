@@ -1,6 +1,5 @@
 import type { Homepage } from '@/payload-types'
 
-import { siteDefaults } from '@/lib/cms/defaults'
 import { Box, Clock, FileText, Image as ImageIcon, type LucideIcon } from 'lucide-react'
 import React from 'react'
 
@@ -20,9 +19,10 @@ const iconMap: Record<ImpactIcon, LucideIcon> = {
 }
 
 export const ImpactSection: React.FC<ImpactSectionProps> = ({ impact }) => {
-  const overline = impact?.overline ?? siteDefaults.impact.overline
-  const stats =
-    impact?.stats?.length && impact.stats.length > 0 ? impact.stats : siteDefaults.impact.stats
+  if (!impact) return null
+
+  const overline = impact.overline
+  const stats = impact.stats || []
 
   return (
     <section className="bg-charcoal text-off-white">

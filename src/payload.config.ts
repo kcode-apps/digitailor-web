@@ -16,6 +16,9 @@ import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { ensureAboutPage } from '@/lib/cms/ensureAboutPage'
+import { ensureHomepage } from '@/lib/cms/ensureHomepage'
+import { ensureSiteNavigation } from '@/lib/cms/ensureSiteNavigation'
+import { ensureSiteSettings } from '@/lib/cms/ensureSiteSettings'
 import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
@@ -23,7 +26,12 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   onInit: async (payload) => {
-    await ensureAboutPage(payload)
+    await Promise.all([
+      ensureAboutPage(payload),
+      ensureHomepage(payload),
+      ensureSiteNavigation(payload),
+      ensureSiteSettings(payload),
+    ])
   },
   admin: {
     components: {
@@ -67,8 +75,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // Auto-sync schema in dev (Supabase session connection). Use migrations in production.
+    // Dev: sync schema from Payload config. Prod: push is off; run `pnpm db:migrate` before start.
     push: process.env.NODE_ENV !== 'production',
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

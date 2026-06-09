@@ -1,7 +1,6 @@
 import type { Homepage } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { siteDefaults } from '@/lib/cms/defaults'
 import { resolveLinkProps } from '@/lib/cms/resolveLink'
 import { ArrowRight, Play } from 'lucide-react'
 import Link from 'next/link'
@@ -13,24 +12,14 @@ type OutputsSectionProps = {
 
 type OutputCard = NonNullable<NonNullable<Homepage['outputs']>['cards']>[number]
 
-type DisplayOutputCard = Pick<OutputCard, 'label' | 'isVideo' | 'id'> & {
-  image?: OutputCard['image']
-}
-
 export const OutputsSection: React.FC<OutputsSectionProps> = ({ outputs }) => {
-  const defaults = siteDefaults.outputs
-  const overline = outputs?.overline ?? defaults.overline
-  const headline = outputs?.headline ?? defaults.headline
-  const body = outputs?.body ?? defaults.body
-  const cta = resolveLinkProps(outputs?.cta) || resolveLinkProps(defaults.cta)
+  if (!outputs) return null
 
-  const cards: DisplayOutputCard[] =
-    outputs?.cards?.length && outputs.cards.length > 0
-      ? outputs.cards
-      : defaults.cards.map((card, index) => ({
-          ...card,
-          id: `default-${index}`,
-        }))
+  const overline = outputs.overline
+  const headline = outputs.headline
+  const body = outputs.body
+  const cta = resolveLinkProps(outputs.cta)
+  const cards = outputs.cards || []
 
   return (
     <section className="border-b border-warm-border/60 bg-beige">

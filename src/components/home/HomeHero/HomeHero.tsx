@@ -2,7 +2,6 @@ import type { Homepage } from '@/payload-types'
 
 import { CTAButton } from '@/components/layout/CTAButton'
 import { Media } from '@/components/Media'
-import { siteDefaults } from '@/lib/cms/defaults'
 import { resolveLinkProps } from '@/lib/cms/resolveLink'
 import React from 'react'
 
@@ -11,13 +10,12 @@ type HomeHeroProps = {
 }
 
 export const HomeHero: React.FC<HomeHeroProps> = ({ homepage }) => {
-  const defaults = siteDefaults.hero
-  const headlineLead = homepage.headlineLead || defaults.headlineLead
-  const headlineAccent = homepage.headlineAccent || defaults.headlineAccent
-  const subheadline = homepage.subheadline || defaults.subheadline
-  const taglineLead = homepage.taglineLead || defaults.taglineLead
-  const taglineAccent = homepage.taglineAccent || defaults.taglineAccent
-  const heroCta = resolveLinkProps(homepage.heroCta) || resolveLinkProps(defaults.heroCta)
+  const headline = homepage.headline
+  const headlineAccent = homepage.headlineAccent
+  const subheadline = homepage.subheadline
+  const taglineLead = homepage.taglineLead
+  const taglineAccent = homepage.taglineAccent
+  const heroCta = resolveLinkProps(homepage.heroCta)
 
   return (
     <section className="relative min-h-[calc(100svh-5rem)] border-b border-warm-border/60 lg:min-h-[calc(100svh-5rem)]">
@@ -39,7 +37,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ homepage }) => {
       <div className="container relative z-10 flex min-h-[calc(100svh-5rem)] flex-col justify-between py-10 md:py-14 lg:py-16">
         <div className="max-w-xl pt-4 md:max-w-2xl md:pt-8 lg:max-w-[34rem]">
           <h1 className="text-4xl leading-[1.08] text-charcoal md:text-5xl lg:text-[3.35rem]">
-            <span className="font-sans font-semibold tracking-[-0.02em]">{headlineLead}</span>{' '}
+            <span className="font-sans font-semibold tracking-[-0.02em]">{headline}</span>{' '}
             <span className="font-serif font-normal italic">{headlineAccent}</span>
           </h1>
           <p className="mt-5 max-w-lg font-sans text-base leading-relaxed text-warm-gray md:mt-6 md:text-lg">

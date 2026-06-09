@@ -26,17 +26,18 @@ export const Homepage: GlobalConfig = {
               type: 'row',
               fields: [
                 {
-                  name: 'headlineLead',
+                  name: 'headline',
                   type: 'text',
                   required: true,
-                  defaultValue: 'Built for the Future of',
-                  admin: { width: '50%' },
+                  admin: {
+                    width: '50%',
+                    description: 'First part of the headline (sans-serif)',
+                  },
                 },
                 {
                   name: 'headlineAccent',
                   type: 'text',
                   required: true,
-                  defaultValue: 'Fashion Production.',
                   admin: {
                     width: '50%',
                     description: 'Rendered in serif italic',
@@ -48,30 +49,20 @@ export const Homepage: GlobalConfig = {
               name: 'subheadline',
               type: 'textarea',
               required: true,
-              defaultValue:
-                'Helping fashion brands create faster workflows, scalable content, and smarter digital production through 3D and AI.',
             },
             {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
-              required: true,
               admin: {
                 description: 'Full-width background image. Subject centered or right works best.',
               },
             },
             link({
               appearances: false,
-              labelDefaultValue: 'VIEW OUR WORK',
               overrides: {
                 name: 'heroCta',
                 label: 'Hero CTA',
-                defaultValue: {
-                  type: 'custom',
-                  label: 'VIEW OUR WORK',
-                  url: '/projects',
-                  newTab: false,
-                },
               },
             }),
             {
@@ -80,13 +71,11 @@ export const Homepage: GlobalConfig = {
                 {
                   name: 'taglineLead',
                   type: 'text',
-                  defaultValue: 'One digital garment.',
                   admin: { width: '50%' },
                 },
                 {
                   name: 'taglineAccent',
                   type: 'text',
-                  defaultValue: 'Endless possibilities.',
                   admin: {
                     width: '50%',
                     description: 'Rendered in serif italic',
@@ -106,32 +95,21 @@ export const Homepage: GlobalConfig = {
                 {
                   name: 'overline',
                   type: 'text',
-                  defaultValue: 'ONE DIGITAL GARMENT.',
                 },
                 {
                   name: 'headline',
                   type: 'text',
                   required: true,
-                  defaultValue: 'Multiple outputs. Maximum impact.',
                 },
                 {
                   name: 'body',
                   type: 'textarea',
-                  defaultValue:
-                    'Create everything your brand needs from one digital foundation.',
                 },
                 link({
                   appearances: false,
-                  labelDefaultValue: 'EXPLORE ALL OUTPUTS',
                   overrides: {
                     name: 'cta',
                     label: 'Section CTA',
-                    defaultValue: {
-                      type: 'custom',
-                      label: 'EXPLORE ALL OUTPUTS',
-                      url: '/projects',
-                      newTab: false,
-                    },
                   },
                 }),
                 {
@@ -161,7 +139,6 @@ export const Homepage: GlobalConfig = {
                 {
                   name: 'overline',
                   type: 'text',
-                  defaultValue: 'THE IMPACT',
                 },
                 {
                   name: 'stats',

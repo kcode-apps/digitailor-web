@@ -8,7 +8,6 @@ import { AdminBar } from '@/components/AdminBar'
 import { SiteFooterLoader } from '@/components/layout/SiteFooter'
 import { SiteHeaderLoader } from '@/components/layout/SiteHeader'
 import { Providers } from '@/providers'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -26,7 +25,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
