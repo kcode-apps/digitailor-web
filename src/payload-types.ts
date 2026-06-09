@@ -162,6 +162,10 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
+  /**
+   * About uses a fixed layout. Standard uses hero + content blocks.
+   */
+  pageType: 'standard' | 'about';
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -205,7 +209,25 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[] | null;
+  aboutContent?: {
+    headline: string;
+    bio: string;
+    portrait?: (number | null) | Media;
+    credentials?:
+      | {
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+    sidebarItems?:
+      | {
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   meta?: {
     title?: string | null;
     /**
@@ -1063,6 +1085,7 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  pageType?: T;
   hero?:
     | T
     | {
@@ -1093,6 +1116,26 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+      };
+  aboutContent?:
+    | T
+    | {
+        headline?: T;
+        bio?: T;
+        portrait?: T;
+        credentials?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+        sidebarItems?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
       };
   meta?:
     | T
@@ -1673,10 +1716,17 @@ export interface SiteSetting {
  */
 export interface Homepage {
   id: number;
-  headline: string;
+  headlineLead: string;
+  /**
+   * Rendered in serif italic
+   */
+  headlineAccent: string;
   subheadline: string;
+  /**
+   * Full-width background image. Subject centered or right works best.
+   */
   heroImage: number | Media;
-  heroCta: {
+  heroCta?: {
     type?: ('reference' | 'custom') | null;
     newTab?: boolean | null;
     reference?:
@@ -1689,23 +1739,59 @@ export interface Homepage {
           value: number | Post;
         } | null);
     url?: string | null;
-    label: string;
+    label?: string | null;
   };
-  processSteps?:
-    | {
-        /**
-         * Display label, e.g. "01"
-         */
-        stepNumber: string;
-        /**
-         * e.g. "SKETCH"
-         */
-        title: string;
-        image: number | Media;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  taglineLead?: string | null;
+  /**
+   * Rendered in serif italic
+   */
+  taglineAccent?: string | null;
+  outputs: {
+    overline?: string | null;
+    headline: string;
+    body?: string | null;
+    cta?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label?: string | null;
+    };
+    cards?:
+      | {
+          /**
+           * e.g. Ecommerce, Campaign, Social Content
+           */
+          label: string;
+          image: number | Media;
+          isVideo?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  impact?: {
+    overline?: string | null;
+    stats?:
+      | {
+          icon: 'clock' | 'cube' | 'image' | 'document';
+          /**
+           * Large display line, e.g. "30–40%" or "Reduced"
+           */
+          headline: string;
+          subheading: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1800,7 +1886,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  headline?: T;
+  headlineLead?: T;
+  headlineAccent?: T;
   subheadline?: T;
   heroImage?: T;
   heroCta?:
@@ -1812,14 +1899,45 @@ export interface HomepageSelect<T extends boolean = true> {
         url?: T;
         label?: T;
       };
-  processSteps?:
+  taglineLead?: T;
+  taglineAccent?: T;
+  outputs?:
     | T
     | {
-        stepNumber?: T;
-        title?: T;
-        image?: T;
-        description?: T;
-        id?: T;
+        overline?: T;
+        headline?: T;
+        body?: T;
+        cta?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        cards?:
+          | T
+          | {
+              label?: T;
+              image?: T;
+              isVideo?: T;
+              id?: T;
+            };
+      };
+  impact?:
+    | T
+    | {
+        overline?: T;
+        stats?:
+          | T
+          | {
+              icon?: T;
+              headline?: T;
+              subheading?: T;
+              description?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

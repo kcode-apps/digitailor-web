@@ -9,14 +9,90 @@ export const siteDefaults = {
     newTab: false,
   },
   hero: {
-    headline: 'Built for the Future of Fashion Production.',
+    headlineLead: 'Built for the Future of',
+    headlineAccent: 'Fashion Production.',
     subheadline:
-      'End-to-end 3D and AI workflows that transform how fashion brands design, develop, and deliver.',
+      'Helping fashion brands create faster workflows, scalable content, and smarter digital production through 3D and AI.',
+    taglineLead: 'One digital garment.',
+    taglineAccent: 'Endless possibilities.',
     heroCta: {
       type: 'custom' as const,
       label: 'VIEW OUR WORK',
-      url: '/case-studies',
+      url: '/projects',
       newTab: false,
     },
   },
+  outputs: {
+    overline: 'ONE DIGITAL GARMENT.',
+    headline: 'Multiple outputs. Maximum impact.',
+    body: 'Create everything your brand needs from one digital foundation.',
+    cta: {
+      type: 'custom' as const,
+      label: 'EXPLORE ALL OUTPUTS',
+      url: '/projects',
+      newTab: false,
+    },
+    cards: [
+      { label: 'Ecommerce', isVideo: false },
+      { label: 'Campaign', isVideo: false },
+      { label: 'Social Content', isVideo: false },
+      { label: 'Editorial', isVideo: false },
+      { label: 'Video / Motion', isVideo: true },
+    ],
+  },
+  impact: {
+    overline: 'THE IMPACT',
+    stats: [
+      {
+        icon: 'clock' as const,
+        headline: '30–40%',
+        subheading: 'Faster development workflows',
+        description: 'Accelerate product development from concept to approval.',
+      },
+      {
+        icon: 'cube' as const,
+        headline: 'Reduced',
+        subheading: 'Physical sampling dependency',
+        description: 'Minimize physical samples and waste with 3D-first workflows.',
+      },
+      {
+        icon: 'image' as const,
+        headline: 'Scalable',
+        subheading: 'Ecommerce content creation',
+        description: 'Produce consistent, on-brand content at scale across every channel.',
+      },
+      {
+        icon: 'document' as const,
+        headline: 'One Digital Garment',
+        subheading: 'Multiple campaign outputs',
+        description: 'Maximize every asset with limitless creative possibilities.',
+      },
+    ],
+  },
+  about: {
+    headline: 'Where Fashion Expertise Meets Digital Innovation.',
+    bio: 'Devmini brings deep fashion industry knowledge together with cutting-edge 3D and AI workflows — helping brands move from concept to campaign faster, with less waste and more creative control.',
+    credentials: [
+      { label: 'Expert in Browzwear & CLO3D' },
+      { label: 'AI-assisted visualization workflows' },
+      { label: 'End-to-end digital product creation' },
+    ],
+    sidebarItems: [
+      {
+        title: '8+ Years in Fashion Design',
+        description:
+          'Experience across product development, technical design, and digital prototyping.',
+      },
+      {
+        title: 'Global Perspective',
+        description: 'Worked with brands and suppliers across Europe, Asia, and North America.',
+      },
+      {
+        title: 'Fashion-First Mindset',
+        description: 'Technology in service of craft — not the other way around.',
+      },
+    ],
+  },
 }
+
+export const aboutDefaults = siteDefaults.about

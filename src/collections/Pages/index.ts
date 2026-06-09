@@ -7,6 +7,7 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { aboutContentField } from '@/fields/aboutContent'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -37,7 +38,7 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'pageType', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -61,11 +62,28 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'pageType',
+      type: 'select',
+      defaultValue: 'standard',
+      options: [
+        { label: 'Standard', value: 'standard' },
+        { label: 'About', value: 'about' },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'About uses a fixed layout. Standard uses hero + content blocks.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
           fields: [hero],
           label: 'Hero',
+          admin: {
+            condition: (_, siblingData) => siblingData?.pageType === 'standard',
+          },
         },
         {
           fields: [
@@ -73,13 +91,23 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
-              required: true,
               admin: {
                 initCollapsed: true,
+                condition: (_, siblingData) => siblingData?.pageType === 'standard',
               },
             },
           ],
           label: 'Content',
+          admin: {
+            condition: (_, siblingData) => siblingData?.pageType === 'standard',
+          },
+        },
+        {
+          fields: [aboutContentField],
+          label: 'About',
+          admin: {
+            condition: (_, siblingData) => siblingData?.pageType === 'about',
+          },
         },
         {
           name: 'meta',
@@ -123,6 +151,19 @@ export const Pages: CollectionConfig<'pages'> = {
     afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt],
     afterDelete: [revalidateDelete],
+    beforeValidate: [
+      ({ data }) => {
+        if (
+          data?.pageType === 'standard' &&
+          data?._status === 'published' &&
+          (!data?.layout || data.layout.length === 0)
+        ) {
+          throw new Error('Standard pages require at least one content block.')
+        }
+
+        return data
+      },
+    ],
   },
   versions: {
     drafts: {

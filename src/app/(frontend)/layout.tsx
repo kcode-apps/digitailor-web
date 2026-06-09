@@ -5,8 +5,8 @@ import { bodyFont, displayFont } from '@/fonts'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
+import { SiteFooterLoader } from '@/components/layout/SiteFooter'
+import { SiteHeaderLoader } from '@/components/layout/SiteHeader'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -38,9 +38,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header />
+          <SiteHeaderLoader />
           {children}
-          <Footer />
+          <SiteFooterLoader />
         </Providers>
       </body>
     </html>

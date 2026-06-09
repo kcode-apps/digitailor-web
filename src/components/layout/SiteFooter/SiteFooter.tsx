@@ -21,8 +21,8 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ footer, siteSettings }) 
   const social = siteSettings.socialLinks
 
   return (
-    <footer className="mt-auto bg-charcoal text-off-white">
-      <div className="container py-10">
+    <footer className="mt-auto border-t border-off-white/15 bg-charcoal text-off-white">
+      <div className="container py-12 md:py-14">
         <div className="grid gap-8 md:grid-cols-3 md:items-center">
           <SiteLogo
             className="[&_span:first-child]:text-off-white [&_span:last-child]:text-off-white/60"

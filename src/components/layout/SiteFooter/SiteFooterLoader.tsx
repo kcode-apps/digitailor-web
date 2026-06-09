@@ -1,8 +1,8 @@
-import { SiteFooter } from '@/components/layout/SiteFooter'
+import { SiteFooter } from '@/components/layout/SiteFooter/SiteFooter'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
 
-export async function Footer() {
+export async function SiteFooterLoader() {
   const [footer, siteSettings] = await Promise.all([
     getCachedGlobal('footer', 1)(),
     getCachedGlobal('site-settings', 1)(),

@@ -1,11 +1,12 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
-import { revalidateFooter } from './hooks/revalidateFooter'
 
-export const Footer: GlobalConfig = {
-  slug: 'footer',
-  label: 'Footer Navigation',
+import { revalidateHeader } from './hooks/revalidateHeader'
+
+export const Header: GlobalConfig = {
+  slug: 'header',
+  label: 'Header Navigation',
   admin: {
     group: 'Site',
   },
@@ -25,12 +26,12 @@ export const Footer: GlobalConfig = {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Footer/RowLabel#RowLabel',
+          RowLabel: '@/globals/Header/RowLabel#RowLabel',
         },
       },
     },
   ],
   hooks: {
-    afterChange: [revalidateFooter],
+    afterChange: [revalidateHeader],
   },
 }
