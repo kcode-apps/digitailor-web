@@ -1,6 +1,6 @@
 import type { Payload } from 'payload'
 
-import { aboutPageData } from '@/endpoints/seed/about-page'
+import { aboutPageData } from '@/lib/cms/pages/aboutPageData'
 
 export async function ensureAboutPage(payload: Payload): Promise<void> {
   const existing = await payload.find({

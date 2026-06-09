@@ -1,11 +1,18 @@
 import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
+import { isSeedEnabled } from '@/lib/cms/seedEnabled'
 import config from '@payload-config'
 import { headers } from 'next/headers'
 
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
 export async function POST(): Promise<Response> {
+  if (!isSeedEnabled()) {
+    return new Response('Seeding is disabled. Set SEED_ENABLED=true in development only.', {
+      status: 403,
+    })
+  }
+
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
 

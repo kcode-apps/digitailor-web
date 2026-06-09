@@ -15,10 +15,7 @@ import { Homepage } from './globals/Homepage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
-import { ensureAboutPage } from '@/lib/cms/ensureAboutPage'
-import { ensureHomepage } from '@/lib/cms/ensureHomepage'
-import { ensureSiteNavigation } from '@/lib/cms/ensureSiteNavigation'
-import { ensureSiteSettings } from '@/lib/cms/ensureSiteSettings'
+import { ensureSiteContent } from '@/lib/cms/ensureSiteContent'
 import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
@@ -26,12 +23,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   onInit: async (payload) => {
-    await Promise.all([
-      ensureAboutPage(payload),
-      ensureHomepage(payload),
-      ensureSiteNavigation(payload),
-      ensureSiteSettings(payload),
-    ])
+    await ensureSiteContent(payload)
   },
   admin: {
     components: {
@@ -75,7 +67,13 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // Dev: sync schema from Payload config. Prod: push is off; run `pnpm db:migrate` before start.
+    /*
+     * Schema workflow:
+     * - Dev (NODE_ENV !== production): push syncs DB from Payload config on startup.
+     * - Prod: push is off. Run `pnpm db:migrate` before start (see `start:prod`).
+     * - After schema changes in dev: `pnpm db:migrate:create`, commit src/migrations/, deploy.
+     * - Seed: dev-only (`SEED_ENABLED=true`). Never run seed in production.
+     */
     push: process.env.NODE_ENV !== 'production',
     migrationDir: path.resolve(dirname, 'migrations'),
   }),

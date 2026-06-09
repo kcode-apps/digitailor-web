@@ -2,7 +2,7 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
-import { aboutPageData } from './about-page'
+import { aboutPageData } from '@/lib/cms/pages/aboutPageData'
 import { home } from './home'
 import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
 import { homepageClearData, homepageSeedData, siteSettingsStarterData } from '@/lib/cms/defaults'

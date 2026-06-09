@@ -1,67 +1,45 @@
 import { Banner } from '@payloadcms/ui/elements/Banner'
 import React from 'react'
 
+import { isSeedEnabled } from '@/lib/cms/seedEnabled'
+
 import { SeedButton } from './SeedButton'
 import './index.scss'
 
 const baseClass = 'before-dashboard'
 
 const BeforeDashboard: React.FC = () => {
+  const seedEnabled = isSeedEnabled()
+
   return (
     <div className={baseClass}>
       <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
+        <h4>Welcome to DIGITAILOR CMS</h4>
       </Banner>
       Here&apos;s what to do next:
       <ul className={`${baseClass}__instructions`}>
+        {seedEnabled ? (
+          <li>
+            <SeedButton />
+            {' to reset local demo data (destructive), then '}
+            <a href="/" target="_blank">
+              visit your website
+            </a>
+            .
+          </li>
+        ) : (
+          <li>
+            Edit globals under <strong>Site</strong> (Homepage, Site Settings, Header, Footer) and
+            pages under <strong>Pages</strong>.
+          </li>
+        )}
         <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
+          Schema: develop with push locally, then run{' '}
+          <code>pnpm db:migrate:create</code> before deploying. Production uses{' '}
+          <code>pnpm start:prod</code> (migrate + start).
         </li>
-        <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
-        </li>
-        <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
-        </li>
+        <li>Do not enable seed in production.</li>
       </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/custom-components/overview"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
     </div>
   )
 }
