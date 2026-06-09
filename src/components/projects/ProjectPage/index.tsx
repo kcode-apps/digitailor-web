@@ -1,7 +1,11 @@
 import type { Project } from '@/payload-types'
 
 import RichText from '@/components/RichText'
-import { Media } from '@/components/Media'
+import { ProjectGallery } from '@/components/projects/ProjectGallery'
+import {
+  getProjectFeaturedImageIndex,
+  getProjectGalleryMedia,
+} from '@/lib/cms/projects/images'
 import React from 'react'
 
 type ProjectPageProps = {
@@ -9,6 +13,9 @@ type ProjectPageProps = {
 }
 
 export const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
+  const images = getProjectGalleryMedia(project)
+  const featuredIndex = getProjectFeaturedImageIndex(project)
+
   return (
     <article className="border-b border-warm-border/60">
       <div className="container py-12 md:py-16 lg:py-24">
@@ -28,17 +35,11 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="relative aspect-[16/10] overflow-hidden bg-beige-dark">
-              {project.featuredImage && typeof project.featuredImage === 'object' ? (
-                <Media
-                  fill
-                  imgClassName="object-cover"
-                  priority
-                  resource={project.featuredImage}
-                  size="(max-width: 1024px) 100vw, 58vw"
-                />
-              ) : null}
-            </div>
+            <ProjectGallery
+              images={images}
+              initialIndex={featuredIndex}
+              priority
+            />
           </div>
         </div>
 

@@ -1,23 +1,26 @@
 import type { Project } from '@/payload-types'
 
+import { getProjectFeaturedImage } from '@/lib/cms/projects/images'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
 import React from 'react'
 
 type ProjectCardProps = {
-  project: Pick<Project, 'title' | 'slug' | 'client' | 'excerpt' | 'featuredImage'>
+  project: Pick<Project, 'title' | 'slug' | 'client' | 'excerpt' | 'images'>
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  const featuredImage = getProjectFeaturedImage(project)
+
   return (
     <article className="group border border-warm-border/60 bg-beige">
       <Link className="block" href={`/projects/${project.slug}`}>
         <div className="relative aspect-[4/5] overflow-hidden bg-beige-dark">
-          {project.featuredImage && typeof project.featuredImage === 'object' ? (
+          {featuredImage && typeof featuredImage === 'object' ? (
             <Media
               fill
               imgClassName="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-              resource={project.featuredImage}
+              resource={featuredImage}
               size="(max-width: 768px) 100vw, 33vw"
             />
           ) : (

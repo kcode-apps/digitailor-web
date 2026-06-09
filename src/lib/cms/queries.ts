@@ -26,6 +26,8 @@ export const getCachedHomepage = (depth = 0) => getCachedGlobal('homepage', dept
 
 export const getCachedAbout = (depth = 0) => getCachedGlobal('about', depth)
 
+export const getCachedProjectsPage = (depth = 0) => getCachedGlobal('projects-page', depth)
+
 async function findPageBySlug(slug: string, draft: boolean): Promise<Page | null> {
   const payload = await getPayload({ config: configPromise })
 
@@ -121,6 +123,19 @@ export async function getPublishedProjects(options?: { depth?: number; limit?: n
       },
     },
   })
+}
+
+export const getCachedPublishedProjects = (options?: { depth?: number; limit?: number }) => {
+  const depth = options?.depth ?? 1
+  const limit = options?.limit ?? 100
+
+  return unstable_cache(
+    async () => getPublishedProjects({ depth, limit }),
+    ['published-projects', String(depth), String(limit)],
+    {
+      tags: ['projects-list'],
+    },
+  )
 }
 
 export async function getPublishedProjectSlugs() {

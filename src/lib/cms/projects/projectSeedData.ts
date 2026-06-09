@@ -3,7 +3,8 @@ import type { RequiredDataFromCollectionSlug } from 'payload'
 import type { Media } from '@/payload-types'
 
 type ProjectSeedArgs = {
-  featuredImage: Media
+  images: Media[]
+  featuredIndex?: number
   slug: string
   title: string
   client: string
@@ -13,7 +14,8 @@ type ProjectSeedArgs = {
 const project = ({
   client,
   excerpt,
-  featuredImage,
+  featuredIndex = 0,
+  images,
   slug,
   title,
 }: ProjectSeedArgs): RequiredDataFromCollectionSlug<'projects'> => ({
@@ -21,7 +23,10 @@ const project = ({
   slug,
   client,
   excerpt,
-  featuredImage: featuredImage.id,
+  images: images.map((image, index) => ({
+    image: image.id,
+    isFeatured: index === featuredIndex,
+  })),
   _status: 'published',
   content: {
     root: {
@@ -62,7 +67,8 @@ export const projectSeedData = (images: Media[]) => [
     client: 'Contemporary Label',
     excerpt:
       '3D-first workflow from concept to ecommerce imagery, reducing sample rounds and time to market.',
-    featuredImage: images[0],
+    images: [images[0], images[1]],
+    featuredIndex: 0,
   }),
   project({
     title: 'Campaign Content System',
@@ -70,7 +76,8 @@ export const projectSeedData = (images: Media[]) => [
     client: 'Global Fashion Brand',
     excerpt:
       'One digital garment powering ecommerce, editorial, and social outputs across multiple seasons.',
-    featuredImage: images[1],
+    images: [images[1], images[2]],
+    featuredIndex: 0,
   }),
   project({
     title: 'Ecommerce Scale-Up',
@@ -78,6 +85,7 @@ export const projectSeedData = (images: Media[]) => [
     client: 'D2C Apparel',
     excerpt:
       'Scalable on-brand product imagery pipeline for rapid SKU expansion and seasonal drops.',
-    featuredImage: images[2],
+    images: [images[2], images[0]],
+    featuredIndex: 0,
   }),
 ]

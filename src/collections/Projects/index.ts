@@ -3,8 +3,10 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { projectImagesField } from '@/fields/projectImages'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { normalizeProjectImages, validateProjectImages } from './hooks/normalizeProjectImages'
 import { revalidateDelete, revalidateProject } from './hooks/revalidateProject'
 
 import {
@@ -52,7 +54,10 @@ export const Projects: CollectionConfig<'projects'> = {
     slug: true,
     client: true,
     excerpt: true,
-    featuredImage: true,
+    images: {
+      image: true,
+      isFeatured: true,
+    },
     meta: {
       image: true,
       description: true,
@@ -76,11 +81,7 @@ export const Projects: CollectionConfig<'projects'> = {
       type: 'textarea',
       required: true,
     },
-    {
-      name: 'featuredImage',
-      type: 'upload',
-      relationTo: 'media',
-    },
+    projectImagesField,
     {
       name: 'content',
       type: 'richText',
@@ -125,7 +126,8 @@ export const Projects: CollectionConfig<'projects'> = {
   ],
   hooks: {
     afterChange: [revalidateProject],
-    beforeChange: [populatePublishedAt],
+    beforeChange: [populatePublishedAt, normalizeProjectImages],
+    beforeValidate: [validateProjectImages],
     afterDelete: [revalidateDelete],
   },
   versions: {

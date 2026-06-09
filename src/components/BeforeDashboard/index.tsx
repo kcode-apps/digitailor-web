@@ -22,8 +22,8 @@ const BeforeDashboard: React.FC = () => {
       </p>
       <ul className={`${baseClass}__instructions`}>
         <li>
-          Edit site-wide content under <strong>Site</strong>: Home Page, About Page, Site Settings, Header,
-          and Footer.
+          Edit site-wide content under <strong>Site</strong>: Home Page, About Page, Projects Page,
+          Site Settings, Header, and Footer.
         </li>
         <li>
           Manage flexible pages under <strong>Pages</strong> (e.g. Contact) and case studies under{' '}

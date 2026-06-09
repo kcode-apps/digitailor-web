@@ -12,6 +12,7 @@ import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
 import { About } from './globals/About/config'
 import { Homepage } from './globals/Homepage/config'
+import { ProjectsPage } from './globals/ProjectsPage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -79,7 +80,7 @@ export default buildConfig({
   }),
   collections: [Pages, Projects, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [SiteSettings, Homepage, About, Header, Footer],
+  globals: [SiteSettings, Homepage, About, ProjectsPage, Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

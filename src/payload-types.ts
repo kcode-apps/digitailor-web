@@ -109,6 +109,7 @@ export interface Config {
     'site-settings': SiteSetting;
     homepage: Homepage;
     about: About;
+    'projects-page': ProjectsPage;
     header: Header;
     footer: Footer;
   };
@@ -116,6 +117,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
+    'projects-page': ProjectsPageSelect<false> | ProjectsPageSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
@@ -234,7 +236,19 @@ export interface Project {
    */
   client?: string | null;
   excerpt: string;
-  featuredImage?: (number | null) | Media;
+  /**
+   * Add project images and mark one as featured for cards and the project page hero.
+   */
+  images?:
+    | {
+        image: number | Media;
+        /**
+         * Only one image can be featured at a time.
+         */
+        isFeatured?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   content?: {
     root: {
       type: string;
@@ -1082,7 +1096,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   client?: T;
   excerpt?: T;
-  featuredImage?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        isFeatured?: T;
+        id?: T;
+      };
   content?: T;
   meta?:
     | T
@@ -1617,6 +1637,28 @@ export interface About {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-page".
+ */
+export interface ProjectsPage {
+  id: number;
+  /**
+   * Small label above the headline.
+   */
+  overline?: string | null;
+  headline: string;
+  /**
+   * Optional supporting copy below the headline.
+   */
+  intro?: string | null;
+  /**
+   * Shown when no published projects are available.
+   */
+  emptyStateMessage?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
 export interface Header {
@@ -1785,6 +1827,19 @@ export interface AboutSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-page_select".
+ */
+export interface ProjectsPageSelect<T extends boolean = true> {
+  overline?: T;
+  headline?: T;
+  intro?: T;
+  emptyStateMessage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

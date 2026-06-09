@@ -95,6 +95,13 @@ export const siteDefaults = {
       },
     ],
   },
+  projectsPage: {
+    overline: 'Case Studies',
+    headline: 'Selected projects and digital production work.',
+    intro:
+      'Explore DIGITAILOR case studies in 3D, AI, and digital fashion production — from concept to campaign-ready output.',
+    emptyStateMessage: 'New projects will be published here soon.',
+  },
 }
 
 /** Starter data for seed + ensure only — not used by frontend components. */
@@ -164,5 +171,15 @@ export function aboutStarterData() {
     bio: siteDefaults.about.bio,
     credentials: siteDefaults.about.credentials,
     sidebarItems: siteDefaults.about.sidebarItems,
+  }
+}
+
+/** Starter data for seed + ensure only — not used by frontend components. */
+export function projectsPageStarterData() {
+  return {
+    overline: siteDefaults.projectsPage.overline,
+    headline: siteDefaults.projectsPage.headline,
+    intro: siteDefaults.projectsPage.intro,
+    emptyStateMessage: siteDefaults.projectsPage.emptyStateMessage,
   }
 }

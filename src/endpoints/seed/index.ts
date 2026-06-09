@@ -8,6 +8,7 @@ import {
   aboutStarterData,
   homepageClearData,
   homepageSeedData,
+  projectsPageStarterData,
   siteSettingsStarterData,
 } from '@/lib/cms/defaults'
 import { image1 } from './image-1'
@@ -65,6 +66,12 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'about',
       data: aboutStarterData(),
+      depth: 0,
+      context: { disableRevalidate: true },
+    }),
+    payload.updateGlobal({
+      slug: 'projects-page',
+      data: projectsPageStarterData(),
       depth: 0,
       context: { disableRevalidate: true },
     }),

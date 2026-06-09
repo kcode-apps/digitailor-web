@@ -17,6 +17,7 @@ export const revalidateProject: CollectionAfterChangeHook<Project> = ({
 
       revalidatePath(path)
       revalidatePath('/projects')
+      revalidateTag('projects-list', 'max')
       revalidateTag('projects-sitemap', 'max')
     }
 
@@ -38,6 +39,7 @@ export const revalidateDelete: CollectionAfterDeleteHook<Project> = ({ doc, req:
   if (!context.disableRevalidate) {
     revalidatePath(`/projects/${doc?.slug}`)
     revalidatePath('/projects')
+    revalidateTag('projects-list', 'max')
     revalidateTag('projects-sitemap', 'max')
   }
 
