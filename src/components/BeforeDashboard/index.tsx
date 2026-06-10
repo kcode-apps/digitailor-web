@@ -26,7 +26,10 @@ const BeforeDashboard: React.FC = () => {
           Site Settings, Header, and Footer.
         </li>
         <li>
-          Manage flexible pages under <strong>Pages</strong> (e.g. Contact) and case studies under{' '}
+          Edit the <strong>Discovery Call</strong> booking form under <strong>Forms</strong>.
+        </li>
+        <li>
+          Manage flexible pages under <strong>Pages</strong> and case studies under{' '}
           <strong>Projects</strong>.
         </li>
         {seedEnabled ? (

@@ -1,7 +1,6 @@
 import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
-import { contactForm as contactFormData } from './contact-form'
-import { contact as contactPageData } from './contact-page'
+import { discoveryCallFormStarterData } from '@/lib/cms/forms/discoveryCallForm'
 import { projectSeedData } from '@/lib/cms/projects/projectSeedData'
 import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
 import {
@@ -122,18 +121,12 @@ export const seed = async ({
     }),
   ])
 
-  payload.logger.info(`— Seeding contact form and pages...`)
-
-  const contactForm = await payload.create({
-    collection: 'forms',
-    depth: 0,
-    data: contactFormData,
-  })
+  payload.logger.info(`— Seeding Discovery Call form...`)
 
   await payload.create({
-    collection: 'pages',
+    collection: 'forms',
     depth: 0,
-    data: contactPageData({ contactForm }),
+    data: discoveryCallFormStarterData(),
   })
 
   payload.logger.info(`— Seeding projects...`)
