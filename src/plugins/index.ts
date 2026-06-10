@@ -6,6 +6,7 @@ import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
+import { datetimeFieldBlock } from '@/fields/formBuilder/datetimeFieldBlock'
 import { Page, Project } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
@@ -57,6 +58,7 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      datetime: datetimeFieldBlock,
     },
     formOverrides: {
       fields: ({ defaultFields }) => {

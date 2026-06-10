@@ -96,9 +96,15 @@ export async function getPublishedPageSlugs() {
   const pages = await payload.find({
     collection: 'pages',
     draft: false,
+    depth: 0,
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
     select: {
       slug: true,
     },
@@ -144,9 +150,15 @@ export async function getPublishedProjectSlugs() {
   const projects = await payload.find({
     collection: 'projects',
     draft: false,
+    depth: 0,
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
     select: {
       slug: true,
     },
