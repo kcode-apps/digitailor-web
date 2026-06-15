@@ -1,5 +1,6 @@
 import type { Project } from '@/payload-types'
 
+import { PaperCard } from '@/components/brand'
 import { getProjectFeaturedImage } from '@/lib/cms/projects/images'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
@@ -13,13 +14,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const featuredImage = getProjectFeaturedImage(project)
 
   return (
-    <article className="group border border-warm-border/60 bg-beige">
+    <PaperCard as="article" className="group" hover>
       <Link className="block" href={`/projects/${project.slug}`}>
-        <div className="relative aspect-[4/5] overflow-hidden bg-beige-dark">
+        <div className="relative aspect-[4/5] overflow-hidden bg-cream-dark">
           {featuredImage && typeof featuredImage === 'object' ? (
             <Media
               fill
-              imgClassName="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              imgClassName="object-cover editorial-image-hover"
               resource={featuredImage}
               size="(max-width: 768px) 100vw, 33vw"
             />
@@ -31,7 +32,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </div>
         <div className="p-6">
           {project.client && (
-            <p className="font-sans text-xs font-medium uppercase tracking-[0.14em] text-warm-gray">
+            <p className="font-sans text-xs font-medium uppercase tracking-[0.14em] text-blush">
               {project.client}
             </p>
           )}
@@ -39,6 +40,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <p className="mt-3 font-sans text-sm leading-relaxed text-warm-gray">{project.excerpt}</p>
         </div>
       </Link>
-    </article>
+    </PaperCard>
   )
 }

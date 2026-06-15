@@ -11,7 +11,7 @@ type SiteLogoProps = {
 export const SiteLogo: React.FC<SiteLogoProps> = ({ siteName, siteTagline, className }) => {
   return (
     <Link className={cn('group inline-flex flex-col leading-none', className)} href="/">
-      <span className="font-sans text-sm font-semibold uppercase tracking-[0.2em] text-charcoal">
+      <span className="font-sans text-sm font-semibold uppercase tracking-[0.18em] text-charcoal transition-gentle group-hover:text-blush">
         {siteName}
       </span>
       {siteTagline && (

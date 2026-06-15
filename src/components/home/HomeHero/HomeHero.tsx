@@ -1,5 +1,6 @@
 import type { Homepage } from '@/payload-types'
 
+import { EditorialHeadline } from '@/components/brand'
 import { CTAButton } from '@/components/layout/CTAButton'
 import { Media } from '@/components/Media'
 import { resolveLinkProps } from '@/lib/cms/resolveLink'
@@ -18,8 +19,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ homepage }) => {
   const heroCta = resolveLinkProps(homepage.heroCta)
 
   return (
-    <section className="relative min-h-[calc(100svh-5rem)] border-b border-warm-border/60 lg:min-h-[calc(100svh-5rem)]">
-      <div aria-hidden className="absolute inset-0 overflow-hidden bg-beige-dark">
+    <section className="relative min-h-[calc(100svh-5rem)] border-b border-blush/20 lg:min-h-[calc(100svh-5rem)]">
+      <div aria-hidden className="absolute inset-0 overflow-hidden bg-cream-dark">
         {homepage.heroImage && typeof homepage.heroImage === 'object' ? (
           <Media
             fill
@@ -30,16 +31,13 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ homepage }) => {
           />
         ) : null}
 
-        <div className="absolute inset-0 bg-gradient-to-r from-beige/95 via-beige/55 to-beige/10 lg:from-beige/92 lg:via-beige/45 lg:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-beige/90 via-transparent to-beige/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/55 to-cream/10 lg:from-cream/92 lg:via-cream/45 lg:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-cream/90 via-transparent to-cream/20" />
       </div>
 
       <div className="container relative z-10 flex min-h-[calc(100svh-5rem)] flex-col justify-between py-10 md:py-14 lg:py-16">
-        <div className="max-w-xl pt-4 md:max-w-2xl md:pt-8 lg:max-w-[34rem]">
-          <h1 className="text-4xl leading-[1.08] text-charcoal md:text-5xl lg:text-[3.35rem]">
-            <span className="font-sans font-semibold tracking-[-0.02em]">{headline}</span>{' '}
-            <span className="font-serif font-normal italic">{headlineAccent}</span>
-          </h1>
+        <div className="max-w-xl pt-4 md:max-w-2xl md:pt-8 lg:max-w-[36rem]">
+          <EditorialHeadline accent={headlineAccent} lead={headline} size="hero" />
           <p className="mt-5 max-w-lg font-sans text-base leading-relaxed text-warm-gray md:mt-6 md:text-lg">
             {subheadline}
           </p>

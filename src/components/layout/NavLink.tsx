@@ -27,8 +27,9 @@ export const NavLink: React.FC<NavLinkProps> = ({
   return (
     <Link
       className={cn(
-        'font-sans text-xs font-medium uppercase tracking-[0.14em] transition-colors',
-        isActive ? 'text-charcoal' : 'text-warm-gray hover:text-charcoal',
+        'relative font-sans text-xs font-medium uppercase tracking-[0.14em] transition-gentle',
+        'after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-blush after:transition-all after:duration-300 after:content-[""]',
+        isActive ? 'text-charcoal after:w-full' : 'text-warm-gray after:w-0 hover:text-charcoal hover:after:w-full',
         className,
       )}
       href={href}

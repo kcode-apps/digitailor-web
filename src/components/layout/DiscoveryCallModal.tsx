@@ -45,11 +45,20 @@ export const DiscoveryCallModal: React.FC<DiscoveryCallModalProps> = ({
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={open}>
-      <DialogContent aria-describedby={hasSubmitted || !description ? undefined : 'discovery-call-modal-description'} className="max-w-xl">
+      <DialogContent
+        aria-describedby={hasSubmitted || !description ? undefined : 'discovery-call-modal-description'}
+        className="max-w-xl rounded-md border-blush/25 bg-cream paper-texture shadow-[0_12px_40px_rgb(26_26_26_/0.08)]"
+        overlayClassName="bg-charcoal/40 backdrop-blur-[2px]"
+      >
         <DialogHeader>
           <DialogTitle className={hasSubmitted ? 'text-center' : undefined}>{dialogTitle}</DialogTitle>
           {!hasSubmitted && description && (
-            <DialogDescription id="discovery-call-modal-description">{description}</DialogDescription>
+            <DialogDescription
+              className="text-warm-gray leading-relaxed"
+              id="discovery-call-modal-description"
+            >
+              {description}
+            </DialogDescription>
           )}
         </DialogHeader>
 

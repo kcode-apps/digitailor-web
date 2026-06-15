@@ -29,9 +29,11 @@ const buttonClassName = (
   className?: string,
 ) =>
   cn(
-    'inline-flex items-center gap-2 px-5 py-3 font-sans text-xs font-medium uppercase tracking-[0.12em] transition-colors',
-    variant === 'primary' && 'bg-charcoal text-off-white hover:bg-charcoal/90',
-    variant === 'accent' && 'bg-beige-dark text-charcoal hover:bg-beige',
+    'inline-flex items-center gap-2 rounded-sm border px-5 py-3 font-sans text-xs font-medium uppercase tracking-[0.12em] transition-gentle',
+    variant === 'primary' &&
+      'border-charcoal bg-charcoal text-off-white hover:border-blush hover:bg-charcoal/95',
+    variant === 'accent' &&
+      'border-blush/35 bg-cream text-charcoal hover:border-blush hover:bg-blush/10',
     className,
   )
 

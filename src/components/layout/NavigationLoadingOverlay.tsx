@@ -8,5 +8,5 @@ import { useNavigationPending } from '@/hooks/useNavigationPending'
 export const NavigationLoadingOverlay: React.FC = () => {
   const pending = useNavigationPending()
 
-  return <LoadingOverlay label="Loading..." open={pending} scope="viewport" />
+  return <LoadingOverlay label="Loading page" open={pending} scope="viewport" />
 }

@@ -53,7 +53,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-warm-border/60 bg-beige/95 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 border-b border-blush/20 bg-cream/95 backdrop-blur-sm paper-texture">
         <div className="container">
           <div className="flex h-20 items-center justify-between gap-6">
             <SiteLogo siteName={siteName} siteTagline={siteTagline} />
@@ -94,7 +94,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
 
           <nav
             className={cn(
-              'border-t border-warm-border/60 py-4 lg:hidden',
+              'border-t border-blush/15 py-4 lg:hidden',
               mobileOpen ? 'block' : 'hidden',
             )}
           >

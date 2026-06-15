@@ -10,7 +10,7 @@ export async function ProjectsPageLoader() {
   ])
 
   return (
-    <section className="border-b border-warm-border/60">
+    <section className="border-b border-blush/20 bg-cream paper-texture">
       <div className="container py-12 md:py-16 lg:py-24">
         <ProjectsPageHeader projectsPage={projectsPage} />
         <ProjectsGrid
