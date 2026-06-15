@@ -9,6 +9,7 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 
 import { datetimeFieldBlock } from '@/fields/formBuilder/datetimeFieldBlock'
 import { Page, Project } from '@/payload-types'
+import { vercelBlobStoragePlugin } from '@/storage/vercelBlob'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Page | Project> = ({ doc }) => {
@@ -30,6 +31,7 @@ const generateURL: GenerateURL<Page | Project> = ({ doc, collectionConfig }) => 
 }
 
 export const plugins: Plugin[] = [
+  vercelBlobStoragePlugin,
   redirectsPlugin({
     collections: ['pages', 'projects'],
     overrides: {
