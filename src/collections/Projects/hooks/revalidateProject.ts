@@ -17,6 +17,7 @@ export const revalidateProject: CollectionAfterChangeHook<Project> = ({
 
       revalidatePath(path)
       revalidatePath('/projects')
+      // 'max' is the cache profile name — required by Next.js 16's revalidateTag API
       revalidateTag('projects-list', 'max')
       revalidateTag('projects-sitemap', 'max')
     }

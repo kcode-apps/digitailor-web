@@ -96,18 +96,21 @@ export const link: LinkType = ({
   ]
 
   if (!disableLabel) {
-    linkTypes.map((linkType) => ({
+    // FIX: Previously .map() returned a new array that was never assigned,
+    // so the width: '50%' style was silently discarded. We now capture the
+    // result and use it when composing the row so fields are properly sized.
+    const sizedLinkTypes = linkTypes.map((linkType) => ({
       ...linkType,
       admin: {
         ...linkType.admin,
         width: '50%',
       },
-    }))
+    })) as Field[]
 
     linkResult.fields.push({
       type: 'row',
       fields: [
-        ...linkTypes,
+        ...sizedLinkTypes,
         {
           name: 'label',
           type: 'text',

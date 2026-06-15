@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { ValidationError } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -121,7 +122,16 @@ export const Pages: CollectionConfig<'pages'> = {
           data?._status === 'published' &&
           (!data?.layout || data.layout.length === 0)
         ) {
-          throw new Error('Published pages require at least one content block.')
+          // FIX: Use Payload's ValidationError so the admin UI maps this to a
+          // field-level error on the 'layout' field instead of a generic crash.
+          throw new ValidationError({
+            errors: [
+              {
+                message: 'Published pages require at least one content block.',
+                path: 'layout',
+              },
+            ],
+          })
         }
 
         return data

@@ -1,6 +1,7 @@
-import type { Config, Page, Project } from '@/payload-types'
+import type { Config, Form, Page, Project, SiteSetting } from '@/payload-types'
 
 import configPromise from '@payload-config'
+import { DISCOVERY_CALL_FORM_TITLE } from '@/lib/cms/forms/discoveryCallForm'
 import { type DataFromGlobalSlug, getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 import { cache } from 'react'
@@ -27,6 +28,71 @@ export const getCachedHomepage = (depth = 0) => getCachedGlobal('homepage', dept
 export const getCachedAbout = (depth = 0) => getCachedGlobal('about', depth)
 
 export const getCachedProjectsPage = (depth = 0) => getCachedGlobal('projects-page', depth)
+
+export function getDiscoveryCallFormFromSettings(settings: SiteSetting): Form | null {
+  const linked = settings.discoveryCallForm
+
+  if (linked && typeof linked === 'object') {
+    return linked
+  }
+
+  return null
+}
+
+async function findDiscoveryCallFormByTitle(payload: Awaited<ReturnType<typeof getPayload>>) {
+  const result = await payload.find({
+    collection: 'forms',
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    pagination: false,
+    where: {
+      title: {
+        equals: DISCOVERY_CALL_FORM_TITLE,
+      },
+    },
+  })
+
+  return result.docs[0] ?? null
+}
+
+export async function getDiscoveryCallForm(): Promise<Form | null> {
+  const payload = await getPayload({ config: configPromise })
+
+  const settings = await payload.findGlobal({
+    slug: 'site-settings',
+    depth: 1,
+    overrideAccess: true,
+  })
+
+  const fromSettings = getDiscoveryCallFormFromSettings(settings)
+
+  if (fromSettings) {
+    return fromSettings
+  }
+
+  const linked = settings.discoveryCallForm
+
+  if (typeof linked === 'number') {
+    try {
+      return await payload.findByID({
+        collection: 'forms',
+        depth: 0,
+        id: linked,
+        overrideAccess: true,
+      })
+    } catch {
+      return findDiscoveryCallFormByTitle(payload)
+    }
+  }
+
+  return findDiscoveryCallFormByTitle(payload)
+}
+
+export const getCachedDiscoveryCallForm = () =>
+  unstable_cache(async () => getDiscoveryCallForm(), ['discovery-call-form'], {
+    tags: ['discovery-call-form', 'global_site-settings'],
+  })
 
 async function findPageBySlug(slug: string, draft: boolean): Promise<Page | null> {
   const payload = await getPayload({ config: configPromise })

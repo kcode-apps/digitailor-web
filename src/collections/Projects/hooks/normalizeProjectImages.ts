@@ -1,5 +1,6 @@
 import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
 
+import { ValidationError } from 'payload'
 import type { Project } from '@/payload-types'
 
 type ProjectImage = NonNullable<Project['images']>[number]
@@ -45,7 +46,17 @@ export const normalizeProjectImages: CollectionBeforeChangeHook<Project> = ({ da
 
 export const validateProjectImages: CollectionBeforeValidateHook<Project> = ({ data }) => {
   if (data?._status === 'published' && (!data.images || data.images.length === 0)) {
-    throw new Error('Published projects require at least one image.')
+    // FIX: Use Payload's ValidationError instead of a plain Error so the admin
+    // UI maps this to a field-level error on the 'images' field rather than
+    // displaying a generic unhandled crash overlay.
+    throw new ValidationError({
+      errors: [
+        {
+          message: 'Published projects require at least one image.',
+          path: 'images',
+        },
+      ],
+    })
   }
 
   return data

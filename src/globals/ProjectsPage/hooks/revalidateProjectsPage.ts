@@ -8,6 +8,7 @@ export const revalidateProjectsPage: GlobalAfterChangeHook = ({
 }) => {
   if (!context.disableRevalidate) {
     payload.logger.info('Revalidating projects page')
+    // 'max' is the cache profile name — required by Next.js 16's revalidateTag API
     revalidateTag('global_projects-page', 'max')
     revalidatePath('/projects', 'layout')
   }

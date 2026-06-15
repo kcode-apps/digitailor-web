@@ -2,6 +2,7 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { Plugin } from 'payload'
+import { revalidateTag } from 'next/cache'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -61,6 +62,18 @@ export const plugins: Plugin[] = [
       datetime: datetimeFieldBlock,
     },
     formOverrides: {
+      hooks: {
+        afterChange: [
+          ({ doc, req: { context } }) => {
+            if (!context.disableRevalidate) {
+              // 'max' is the cache profile name — required by Next.js 16's revalidateTag API
+              revalidateTag('discovery-call-form', 'max')
+            }
+
+            return doc
+          },
+        ],
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {

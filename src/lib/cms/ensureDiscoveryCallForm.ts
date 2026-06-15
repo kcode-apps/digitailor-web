@@ -1,3 +1,4 @@
+import type { Form } from '@/payload-types'
 import type { Payload } from 'payload'
 
 import {
@@ -5,7 +6,7 @@ import {
   discoveryCallFormStarterData,
 } from '@/lib/cms/forms/discoveryCallForm'
 
-export async function ensureDiscoveryCallForm(payload: Payload): Promise<void> {
+export async function ensureDiscoveryCallForm(payload: Payload): Promise<Form | null> {
   const existing = await payload.find({
     collection: 'forms',
     depth: 0,
@@ -19,11 +20,11 @@ export async function ensureDiscoveryCallForm(payload: Payload): Promise<void> {
     },
   })
 
-  if (existing.docs.length > 0) {
-    return
+  if (existing.docs[0]) {
+    return existing.docs[0]
   }
 
-  await payload.create({
+  return payload.create({
     collection: 'forms',
     context: {
       disableRevalidate: true,
@@ -32,6 +33,4 @@ export async function ensureDiscoveryCallForm(payload: Payload): Promise<void> {
     depth: 0,
     overrideAccess: true,
   })
-
-  payload.logger.info('Populated default Discovery Call form')
 }

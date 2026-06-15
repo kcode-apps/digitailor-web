@@ -71,6 +71,7 @@ export default buildConfig({
     /*
      * Schema workflow:
      * - Dev: push enabled — schema syncs from Payload config on startup.
+     *   Use Supabase session mode (port 5432) in DATABASE_URL for local dev, not the transaction pooler.
      *   After schema changes: stop dev, run `npm run db:migrate:create`, then `npm run db:migrate`.
      * - Prod: push disabled; run `npm run start:prod` (migrate + start).
      * - Seed: dev-only (`SEED_ENABLED=true`). Never run seed in production.

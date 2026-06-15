@@ -8,6 +8,7 @@ export const revalidateSiteSettings: GlobalAfterChangeHook = ({
 }) => {
   if (!context.disableRevalidate) {
     payload.logger.info('Revalidating site settings')
+    // 'max' is the cache profile name — required by Next.js 16's revalidateTag API
     revalidateTag('global_site-settings', 'max')
   }
 

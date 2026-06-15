@@ -14,5 +14,4 @@ export const defaultHeaderNavItems = (): NonNullable<Header['navItems']> => [
   customLink('SERVICES', '/services'),
   customLink('CASE STUDIES', '/projects'),
   customLink('ABOUT DEVMINI', '/about'),
-  customLink('CONTACT', '/contact'),
 ]

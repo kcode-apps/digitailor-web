@@ -95,39 +95,6 @@ export function discoveryCallFormStarterData(): RequiredDataFromCollectionSlug<'
         width: 100,
       },
       {
-        blockType: 'message',
-        message: {
-          root: {
-            type: 'root',
-            children: [
-              {
-                type: 'paragraph',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'Brief summary of your goals and what you hope to discuss during the call.',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                textFormat: 0,
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1,
-          },
-        },
-      },
-      {
         name: 'purpose',
         blockName: 'purpose',
         blockType: 'textarea',

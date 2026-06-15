@@ -288,7 +288,7 @@ export interface Project {
  */
 export interface Media {
   id: number;
-  alt?: string | null;
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -1943,21 +1943,18 @@ export interface SiteSetting {
   id: number;
   siteName: string;
   siteTagline?: string | null;
-  primaryCta: {
-    type?: ('reference' | 'custom') | null;
-    newTab?: boolean | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: number | Page;
-        } | null)
-      | ({
-          relationTo: 'projects';
-          value: number | Project;
-        } | null);
-    url?: string | null;
-    label: string;
-  };
+  /**
+   * Label for the header button that opens the discovery call form modal.
+   */
+  primaryCtaLabel?: string | null;
+  /**
+   * Form opened in a modal when visitors click the primary header CTA.
+   */
+  discoveryCallForm?: (number | null) | Form;
+  /**
+   * Short text shown under the modal title before the form is submitted.
+   */
+  discoveryCallModalDescription?: string | null;
   socialLinks?: {
     instagram?: string | null;
     linkedin?: string | null;
@@ -2174,15 +2171,9 @@ export interface Footer {
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   siteTagline?: T;
-  primaryCta?:
-    | T
-    | {
-        type?: T;
-        newTab?: T;
-        reference?: T;
-        url?: T;
-        label?: T;
-      };
+  primaryCtaLabel?: T;
+  discoveryCallForm?: T;
+  discoveryCallModalDescription?: T;
   socialLinks?:
     | T
     | {

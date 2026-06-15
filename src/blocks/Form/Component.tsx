@@ -1,11 +1,12 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/utilities/ui'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
@@ -14,9 +15,43 @@ import { getClientSideURL } from '@/utilities/getURL'
 export type FormBlockType = {
   blockName?: string
   blockType?: 'formBlock'
+  embedded?: boolean
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
+  onSubmitted?: () => void
+  suppressConfirmationHeading?: boolean
+}
+
+function buildDefaultValues(formFields: FormType['fields']): Record<string, unknown> {
+  if (!formFields?.length) {
+    return {}
+  }
+
+  return formFields.reduce<Record<string, unknown>>((values, field) => {
+    if ('name' in field && field.name) {
+      values[field.name] =
+        'defaultValue' in field && field.defaultValue != null ? field.defaultValue : ''
+    }
+
+    return values
+  }, {})
+}
+
+function getFieldKey(field: FormType['fields'] extends (infer T)[] | null | undefined ? T : never, index: number) {
+  if ('id' in field && field.id) {
+    return String(field.id)
+  }
+
+  if ('name' in field && field.name) {
+    return field.name
+  }
+
+  if ('blockName' in field && field.blockName) {
+    return field.blockName
+  }
+
+  return String(index)
 }
 
 export const FormBlock: React.FC<
@@ -25,14 +60,22 @@ export const FormBlock: React.FC<
   } & FormBlockType
 > = (props) => {
   const {
+    embedded = false,
     enableIntro,
+    onSubmitted,
+    suppressConfirmationHeading = false,
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
   } = props
 
+  const defaultValues = useMemo(
+    () => buildDefaultValues(formFromProps.fields),
+    [formFromProps.fields],
+  )
+
   const formMethods = useForm({
-    defaultValues: formFromProps.fields,
+    defaultValues,
   })
   const {
     control,
@@ -42,25 +85,21 @@ export const FormBlock: React.FC<
   } = formMethods
 
   const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>()
+  const [hasSubmitted, setHasSubmitted] = useState(false)
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
+  const formElementId = formID ? `form-${formID}` : 'form'
 
   const onSubmit = useCallback(
-    (data: FormFieldBlock[]) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
+    (data: Record<string, unknown>) => {
       const submitForm = async () => {
         setError(undefined)
+        setIsLoading(true)
 
         const dataToSend = Object.entries(data).map(([name, value]) => ({
           field: name,
           value,
         }))
-
-        // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true)
-        }, 1000)
 
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
@@ -76,82 +115,85 @@ export const FormBlock: React.FC<
 
           const res = await req.json()
 
-          clearTimeout(loadingTimerID)
-
           if (req.status >= 400) {
-            setIsLoading(false)
-
             setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
+              message: res.errors?.[0]?.message || 'Something went wrong. Please try again.',
               status: res.status,
             })
 
             return
           }
 
-          setIsLoading(false)
           setHasSubmitted(true)
+          onSubmitted?.()
 
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
 
-            const redirectUrl = url
-
-            if (redirectUrl) router.push(redirectUrl)
+            if (url) router.push(url)
           }
         } catch (err) {
           console.warn(err)
-          setIsLoading(false)
           setError({
-            message: 'Something went wrong.',
+            message: 'Something went wrong. Please try again.',
           })
+        } finally {
+          setIsLoading(false)
         }
       }
 
       void submitForm()
     },
-    [router, formID, redirect, confirmationType],
+    [router, formID, onSubmitted, redirect, confirmationType],
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
+    <div className={cn(!embedded && 'container lg:max-w-[48rem]')}>
       {enableIntro && introContent && !hasSubmitted && (
         <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
       )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
+      <div className={cn(!embedded && 'rounded-[0.8rem] border border-border p-4 lg:p-6')}>
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
+            <RichText
+              className={cn(
+                embedded && 'text-center',
+                suppressConfirmationHeading && '[&_h2:first-child]:hidden',
+              )}
+              data={confirmationMessage}
+            />
           )}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {error && (
+            <p className="text-destructive text-sm" role="alert">
+              {error.message}
+            </p>
+          )}
           {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+            <form id={formElementId} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
-                {formFromProps &&
-                  formFromProps.fields &&
-                  formFromProps.fields?.map((field, index) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                    if (Field) {
-                      return (
-                        <div className="mb-6 last:mb-0" key={index}>
-                          <Field
-                            form={formFromProps}
-                            {...field}
-                            {...formMethods}
-                            control={control}
-                            errors={errors}
-                            register={register}
-                          />
-                        </div>
-                      )
-                    }
-                    return null
-                  })}
+                {formFromProps.fields?.map((field, index) => {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                  if (Field) {
+                    return (
+                      <div className="mb-6 last:mb-0" key={getFieldKey(field, index)}>
+                        <Field
+                          form={formFromProps}
+                          {...field}
+                          {...formMethods}
+                          control={control}
+                          errors={errors}
+                          register={register}
+                        />
+                      </div>
+                    )
+                  }
+                  return null
+                })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
+              <Button form={formElementId} type="submit" variant="default">
                 {submitButtonLabel}
               </Button>
             </form>

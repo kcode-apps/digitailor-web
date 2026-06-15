@@ -16,6 +16,7 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
       payload.logger.info(`Revalidating page at path: ${path}`)
 
       revalidatePath(path)
+      // Invalidate the pages sitemap cache used by the frontend
       revalidateTag('pages-sitemap', 'max')
     }
 

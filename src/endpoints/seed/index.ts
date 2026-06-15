@@ -123,7 +123,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding Discovery Call form...`)
 
-  await payload.create({
+  const discoveryCallForm = await payload.create({
     collection: 'forms',
     depth: 0,
     data: discoveryCallFormStarterData(),
@@ -151,7 +151,7 @@ export const seed = async ({
     }),
     payload.updateGlobal({
       slug: 'site-settings',
-      data: siteSettingsStarterData(),
+      data: siteSettingsStarterData({ discoveryCallFormId: discoveryCallForm.id }),
     }),
     payload.updateGlobal({
       slug: 'homepage',

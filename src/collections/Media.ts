@@ -27,7 +27,10 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      //required: true,
+      // Alt text is required for WCAG 2.1 AA accessibility compliance.
+      // For a fashion portfolio, every image must have descriptive alt text
+      // for both screen readers and SEO purposes.
+      required: true,
     },
     {
       name: 'caption',

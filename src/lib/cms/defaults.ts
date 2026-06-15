@@ -3,12 +3,9 @@ export const siteDefaults = {
   siteName: 'DIGITAILOR',
   siteTagline: 'by Devmini',
   copyright: '© 2024 DIGITAILOR. All rights reserved.',
-  primaryCta: {
-    type: 'custom' as const,
-    label: 'BOOK A DISCOVERY CALL',
-    url: '/contact',
-    newTab: false,
-  },
+  primaryCtaLabel: 'BOOK A DISCOVERY CALL',
+  discoveryCallModalDescription:
+    "Share your details and preferred time. We'll follow up to confirm your call.",
   hero: {
     headline: 'Built for the Future of',
     headlineAccent: 'Fashion Production.',
@@ -105,12 +102,16 @@ export const siteDefaults = {
 }
 
 /** Starter data for seed + ensure only — not used by frontend components. */
-export function siteSettingsStarterData() {
+export function siteSettingsStarterData(options?: { discoveryCallFormId?: number }) {
   return {
     siteName: siteDefaults.siteName,
     siteTagline: siteDefaults.siteTagline,
     copyright: siteDefaults.copyright,
-    primaryCta: siteDefaults.primaryCta,
+    primaryCtaLabel: siteDefaults.primaryCtaLabel,
+    discoveryCallModalDescription: siteDefaults.discoveryCallModalDescription,
+    ...(options?.discoveryCallFormId
+      ? { discoveryCallForm: options.discoveryCallFormId }
+      : {}),
   }
 }
 
