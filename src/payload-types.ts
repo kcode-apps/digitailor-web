@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     projects: Project;
+    services: Service;
     media: Media;
     users: User;
     redirects: Redirect;
@@ -89,6 +90,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -110,6 +112,7 @@ export interface Config {
     homepage: Homepage;
     about: About;
     'projects-page': ProjectsPage;
+    'services-page': ServicesPage;
     header: Header;
     footer: Footer;
   };
@@ -118,6 +121,7 @@ export interface Config {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     about: AboutSelect<false> | AboutSelect<true>;
     'projects-page': ProjectsPageSelect<false> | ProjectsPageSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
@@ -1150,6 +1154,37 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  /**
+   * Sequence label shown on the card, e.g. "01".
+   */
+  displayNumber: string;
+  title: string;
+  icon: 'clock' | 'dollar' | 'check' | 'heart' | 'cube' | 'image' | 'sparkles' | 'pencil' | 'users' | 'layers';
+  image?: (number | null) | Media;
+  features?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Footer bar prefix, e.g. "IDEAL FOR:" or "BENEFITS:".
+   */
+  footerLabel?: string | null;
+  footerText?: string | null;
+  /**
+   * Controls card order on the services page (lowest first).
+   */
+  sortOrder: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1340,6 +1375,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
       } | null)
     | ({
         relationTo: 'media';
@@ -1556,6 +1595,27 @@ export interface ProjectsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  displayNumber?: T;
+  title?: T;
+  icon?: T;
+  image?: T;
+  features?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  footerLabel?: T;
+  footerText?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2108,6 +2168,57 @@ export interface ProjectsPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page".
+ */
+export interface ServicesPage {
+  id: number;
+  /**
+   * Wide banner image. Subject on the right works best — copy sits on the left with a gradient overlay.
+   */
+  bannerImage?: (number | null) | Media;
+  /**
+   * Small label above the headline, e.g. "SERVICES".
+   */
+  overline?: string | null;
+  /**
+   * First part of the headline (sans-serif).
+   */
+  headline: string;
+  /**
+   * Rendered in serif italic, e.g. "Digitally."
+   */
+  headlineAccent: string;
+  /**
+   * Supporting line below the headline.
+   */
+  subheadline?: string | null;
+  description?: string | null;
+  /**
+   * Icon + label pairs shown below the hero copy.
+   */
+  valueProps?:
+    | {
+        icon: 'clock' | 'dollar' | 'check' | 'heart' | 'cube' | 'image' | 'sparkles' | 'pencil' | 'users' | 'layers';
+        /**
+         * Short uppercase label, e.g. "FASTER DEVELOPMENT".
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Centered label above the service cards, e.g. "WHAT WE DO".
+   */
+  sectionOverline?: string | null;
+  /**
+   * Shown when no services are available.
+   */
+  emptyStateMessage?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
 export interface Header {
@@ -2282,6 +2393,30 @@ export interface ProjectsPageSelect<T extends boolean = true> {
   overline?: T;
   headline?: T;
   intro?: T;
+  emptyStateMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  bannerImage?: T;
+  overline?: T;
+  headline?: T;
+  headlineAccent?: T;
+  subheadline?: T;
+  description?: T;
+  valueProps?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  sectionOverline?: T;
   emptyStateMessage?: T;
   updatedAt?: T;
   createdAt?: T;

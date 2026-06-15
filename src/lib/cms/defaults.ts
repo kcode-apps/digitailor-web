@@ -99,6 +99,22 @@ export const siteDefaults = {
       'Explore DIGITAILOR case studies in 3D, AI, and digital fashion production — from concept to campaign-ready output.',
     emptyStateMessage: 'New projects will be published here soon.',
   },
+  servicesPage: {
+    overline: 'SERVICES',
+    headline: 'From Concept to Campaign.',
+    headlineAccent: 'Digitally.',
+    subheadline: 'Fashion Design • 3D Product Creation • AI Visual Content',
+    description:
+      'At DIGITAILOR, we combine design expertise, 3D technology, and AI creativity to help fashion brands develop better products and powerful visuals—faster.',
+    valueProps: [
+      { icon: 'clock' as const, label: 'FASTER DEVELOPMENT' },
+      { icon: 'dollar' as const, label: 'REDUCED SAMPLING COSTS' },
+      { icon: 'check' as const, label: 'SMARTER DECISIONS' },
+      { icon: 'heart' as const, label: 'STRONGER BRANDS' },
+    ],
+    sectionOverline: 'WHAT WE DO',
+    emptyStateMessage: 'Services will appear here once published.',
+  },
 }
 
 /** Starter data for seed + ensure only — not used by frontend components. */
@@ -182,5 +198,19 @@ export function projectsPageStarterData() {
     headline: siteDefaults.projectsPage.headline,
     intro: siteDefaults.projectsPage.intro,
     emptyStateMessage: siteDefaults.projectsPage.emptyStateMessage,
+  }
+}
+
+/** Starter data for seed + ensure only — not used by frontend components. */
+export function servicesPageStarterData() {
+  return {
+    overline: siteDefaults.servicesPage.overline,
+    headline: siteDefaults.servicesPage.headline,
+    headlineAccent: siteDefaults.servicesPage.headlineAccent,
+    subheadline: siteDefaults.servicesPage.subheadline,
+    description: siteDefaults.servicesPage.description,
+    valueProps: siteDefaults.servicesPage.valueProps,
+    sectionOverline: siteDefaults.servicesPage.sectionOverline,
+    emptyStateMessage: siteDefaults.servicesPage.emptyStateMessage,
   }
 }

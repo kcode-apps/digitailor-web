@@ -2,12 +2,14 @@ import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { discoveryCallFormStarterData } from '@/lib/cms/forms/discoveryCallForm'
 import { projectSeedData } from '@/lib/cms/projects/projectSeedData'
+import { serviceSeedData } from '@/lib/cms/services/serviceSeedData'
 import { defaultHeaderNavItems } from '@/lib/cms/defaultNavigation'
 import {
   aboutStarterData,
   homepageClearData,
   homepageSeedData,
   projectsPageStarterData,
+  servicesPageStarterData,
   siteSettingsStarterData,
 } from '@/lib/cms/defaults'
 import { image1 } from './image-1'
@@ -17,6 +19,7 @@ import { imageHero1 } from './image-hero-1'
 const collectionsToClear: CollectionSlug[] = [
   'pages',
   'projects',
+  'services',
   'media',
   'forms',
   'form-submissions',
@@ -71,6 +74,15 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'projects-page',
       data: projectsPageStarterData(),
+      depth: 0,
+      context: { disableRevalidate: true },
+    }),
+    payload.updateGlobal({
+      slug: 'services-page',
+      data: {
+        ...servicesPageStarterData(),
+        bannerImage: null,
+      } as Record<string, unknown>,
       depth: 0,
       context: { disableRevalidate: true },
     }),
@@ -142,6 +154,19 @@ export const seed = async ({
     ),
   )
 
+  payload.logger.info(`— Seeding services...`)
+
+  await Promise.all(
+    serviceSeedData([image1Doc, image2Doc, image3Doc]).map((data) =>
+      payload.create({
+        collection: 'services',
+        depth: 0,
+        context: { disableRevalidate: true },
+        data,
+      }),
+    ),
+  )
+
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
@@ -158,6 +183,13 @@ export const seed = async ({
       data: {
         ...homepageSeedData([image1Doc.id, image2Doc.id, image3Doc.id, image1Doc.id, image2Doc.id]),
         heroImage: imageHeroDoc.id,
+      },
+    }),
+    payload.updateGlobal({
+      slug: 'services-page',
+      data: {
+        ...servicesPageStarterData(),
+        bannerImage: imageHeroDoc.id,
       },
     }),
   ])

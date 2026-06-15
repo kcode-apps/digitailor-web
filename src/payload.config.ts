@@ -7,12 +7,14 @@ import { fileURLToPath } from 'url'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Projects } from './collections/Projects'
+import { Services } from './collections/Services'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer/config'
 import { Header } from './globals/Header/config'
 import { About } from './globals/About/config'
 import { Homepage } from './globals/Homepage/config'
 import { ProjectsPage } from './globals/ProjectsPage/config'
+import { ServicesPage } from './globals/ServicesPage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -79,9 +81,9 @@ export default buildConfig({
     push: process.env.NODE_ENV !== 'production',
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  collections: [Pages, Projects, Media, Users],
+  collections: [Pages, Projects, Services, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [SiteSettings, Homepage, About, ProjectsPage, Header, Footer],
+  globals: [SiteSettings, Homepage, About, ProjectsPage, ServicesPage, Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

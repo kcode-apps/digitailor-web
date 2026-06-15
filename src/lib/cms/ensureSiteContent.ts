@@ -4,6 +4,8 @@ import { ensureAbout } from '@/lib/cms/ensureAbout'
 import { ensureDiscoveryCallForm } from '@/lib/cms/ensureDiscoveryCallForm'
 import { ensureHomepage } from '@/lib/cms/ensureHomepage'
 import { ensureProjectsPage } from '@/lib/cms/ensureProjectsPage'
+import { ensureServices } from '@/lib/cms/ensureServices'
+import { ensureServicesPage } from '@/lib/cms/ensureServicesPage'
 import { ensureSiteNavigation } from '@/lib/cms/ensureSiteNavigation'
 import { ensureSiteSettings } from '@/lib/cms/ensureSiteSettings'
 
@@ -19,6 +21,8 @@ export async function ensureSiteContent(payload: Payload): Promise<void> {
     ensureAbout(payload),
     ensureHomepage(payload),
     ensureProjectsPage(payload),
+    ensureServicesPage(payload),
+    ensureServices(payload),
     ensureSiteNavigation(payload),
     // Pass the already-resolved form so ensureSiteSettings doesn't fetch it again
     ensureSiteSettings(payload, form),

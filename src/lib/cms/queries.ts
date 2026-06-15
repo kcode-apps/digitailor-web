@@ -29,6 +29,8 @@ export const getCachedAbout = (depth = 0) => getCachedGlobal('about', depth)
 
 export const getCachedProjectsPage = (depth = 0) => getCachedGlobal('projects-page', depth)
 
+export const getCachedServicesPage = (depth = 0) => getCachedGlobal('services-page', depth)
+
 export function getDiscoveryCallFormFromSettings(settings: SiteSetting): Form | null {
   const linked = settings.discoveryCallForm
 
@@ -206,6 +208,32 @@ export const getCachedPublishedProjects = (options?: { depth?: number; limit?: n
     ['published-projects', String(depth), String(limit)],
     {
       tags: ['projects-list'],
+    },
+  )
+}
+
+export async function getPublishedServices(options?: { depth?: number; limit?: number }) {
+  const payload = await getPayload({ config: configPromise })
+
+  return payload.find({
+    collection: 'services',
+    depth: options?.depth ?? 1,
+    limit: options?.limit ?? 100,
+    overrideAccess: false,
+    pagination: false,
+    sort: 'sortOrder',
+  })
+}
+
+export const getCachedPublishedServices = (options?: { depth?: number; limit?: number }) => {
+  const depth = options?.depth ?? 1
+  const limit = options?.limit ?? 100
+
+  return unstable_cache(
+    async () => getPublishedServices({ depth, limit }),
+    ['published-services', String(depth), String(limit)],
+    {
+      tags: ['services-list'],
     },
   )
 }
