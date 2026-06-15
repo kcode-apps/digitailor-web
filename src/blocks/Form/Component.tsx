@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 import { cn } from '@/utilities/ui'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
@@ -163,40 +164,42 @@ export const FormBlock: React.FC<
               data={confirmationMessage}
             />
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && (
-            <p className="text-destructive text-sm" role="alert">
+            <p className="text-destructive mb-4 text-sm" role="alert">
               {error.message}
             </p>
           )}
           {!hasSubmitted && (
-            <form id={formElementId} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
-                {formFromProps.fields?.map((field, index) => {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
-                  if (Field) {
-                    return (
-                      <div className="mb-6 last:mb-0" key={getFieldKey(field, index)}>
-                        <Field
-                          form={formFromProps}
-                          {...field}
-                          {...formMethods}
-                          control={control}
-                          errors={errors}
-                          register={register}
-                        />
-                      </div>
-                    )
-                  }
-                  return null
-                })}
-              </div>
+            <div className="relative">
+              <LoadingOverlay label="Submitting form" open={isLoading} scope="inline" />
+              <form id={formElementId} onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-4 last:mb-0">
+                  {formFromProps.fields?.map((field, index) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                    if (Field) {
+                      return (
+                        <div className="mb-6 last:mb-0" key={getFieldKey(field, index)}>
+                          <Field
+                            form={formFromProps}
+                            {...field}
+                            {...formMethods}
+                            control={control}
+                            errors={errors}
+                            register={register}
+                          />
+                        </div>
+                      )
+                    }
+                    return null
+                  })}
+                </div>
 
-              <Button form={formElementId} type="submit" variant="default">
-                {submitButtonLabel}
-              </Button>
-            </form>
+                <Button disabled={isLoading} form={formElementId} type="submit" variant="default">
+                  {submitButtonLabel}
+                </Button>
+              </form>
+            </div>
           )}
         </FormProvider>
       </div>

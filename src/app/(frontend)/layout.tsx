@@ -2,11 +2,12 @@ import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { bodyFont, displayFont } from '@/fonts'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { SiteFooterLoader } from '@/components/layout/SiteFooter'
 import { SiteHeaderLoader } from '@/components/layout/SiteHeader'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -36,9 +37,27 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <SiteHeaderLoader />
+          <Suspense
+            fallback={
+              <LoadingOverlay
+                className="h-20 border-b border-warm-border/60"
+                scope="section"
+              />
+            }
+          >
+            <SiteHeaderLoader />
+          </Suspense>
           {children}
-          <SiteFooterLoader />
+          <Suspense
+            fallback={
+              <LoadingOverlay
+                className="border-t border-warm-border/60 py-12"
+                scope="section"
+              />
+            }
+          >
+            <SiteFooterLoader />
+          </Suspense>
         </Providers>
       </body>
     </html>
