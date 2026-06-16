@@ -76,7 +76,10 @@ export const FormBlock: React.FC<
   )
 
   const formMethods = useForm({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      _hp: '',
+    },
   })
   const {
     control,
@@ -94,13 +97,21 @@ export const FormBlock: React.FC<
   const onSubmit = useCallback(
     (data: Record<string, unknown>) => {
       const submitForm = async () => {
+        if (typeof data._hp === 'string' && data._hp.trim()) {
+          setHasSubmitted(true)
+          onSubmitted?.()
+          return
+        }
+
         setError(undefined)
         setIsLoading(true)
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+        const dataToSend = Object.entries(data)
+          .filter(([name]) => name !== '_hp')
+          .map(([name, value]) => ({
+            field: name,
+            value,
+          }))
 
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
@@ -173,6 +184,14 @@ export const FormBlock: React.FC<
             <div className="relative">
               <LoadingOverlay label="Submitting form" open={isLoading} scope="inline" />
               <form id={formElementId} onSubmit={handleSubmit(onSubmit)}>
+                <input
+                  {...register('_hp')}
+                  aria-hidden="true"
+                  autoComplete="off"
+                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  tabIndex={-1}
+                  type="text"
+                />
                 <div className="mb-4 last:mb-0">
                   {formFromProps.fields?.map((field, index) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,5 +1,6 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
+import { getDiscoveryCallFormEmails } from '@/lib/cms/forms/discoveryCallFormEmails'
 import { DEFAULT_TIMEZONE } from '@/lib/formBuilder/datetime'
 
 export const DISCOVERY_CALL_FORM_TITLE = 'Discovery Call'
@@ -8,6 +9,7 @@ export const DISCOVERY_CALL_FORM_TITLE = 'Discovery Call'
 export function discoveryCallFormStarterData(): RequiredDataFromCollectionSlug<'forms'> {
   return {
     title: DISCOVERY_CALL_FORM_TITLE,
+    emails: getDiscoveryCallFormEmails(),
     submitButtonLabel: 'Book discovery call',
     confirmationType: 'message',
     confirmationMessage: {

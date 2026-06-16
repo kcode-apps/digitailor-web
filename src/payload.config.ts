@@ -18,8 +18,12 @@ import { ServicesPage } from './globals/ServicesPage/config'
 import { SiteSettings } from './globals/SiteSettings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { getEmailAdapter } from '@/email/config'
 import { ensureSiteContent } from '@/lib/cms/ensureSiteContent'
+import { validateServerEnv } from '@/lib/env/server'
 import { getServerSideURL } from './utilities/getURL'
+
+validateServerEnv()
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -83,6 +87,7 @@ export default buildConfig({
   }),
   collections: [Pages, Projects, Services, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
+  email: getEmailAdapter(),
   globals: [SiteSettings, Homepage, About, ProjectsPage, ServicesPage, Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET,

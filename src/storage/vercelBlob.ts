@@ -8,8 +8,12 @@ const isProduction = process.env.NODE_ENV === 'production'
  * `Media.upload.staticDir` (`public/media`) locally instead.
  *
  * Requires `BLOB_READ_WRITE_TOKEN` on Vercel (auto-injected when Blob storage
- * is linked to the project). `clientUploads` bypasses Vercel's 4.5MB serverless
+ * is linked to the project). Production deploys fail fast via `validateServerEnv`
+ * when the token is missing. `clientUploads` bypasses Vercel's 4.5MB serverless
  * request body limit for admin uploads.
+ *
+ * Dev uploads are not migrated to prod automatically — re-upload media in production
+ * or run a dedicated blob migration before go-live.
  */
 export const vercelBlobStoragePlugin: Plugin = vercelBlobStorage({
   enabled: isProduction,
