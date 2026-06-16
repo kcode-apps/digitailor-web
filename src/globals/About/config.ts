@@ -33,6 +33,9 @@ export const About: GlobalConfig = {
       name: 'portrait',
       type: 'upload',
       relationTo: 'media',
+      admin: {
+        description: 'Recommended: 900×1200px (3:4 portrait). Displayed in a tall portrait frame on the About page.',
+      },
     },
     {
       name: 'credentials',

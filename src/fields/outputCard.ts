@@ -14,7 +14,8 @@ export const outputCardFields: Field[] = [
     type: 'upload',
     relationTo: 'media',
     admin: {
-      description: 'Optional until media is uploaded in admin or via seed.',
+      description:
+        'Recommended: 600×1000px (3:5 portrait). Optional until media is uploaded in admin or via seed.',
     },
   },
   {

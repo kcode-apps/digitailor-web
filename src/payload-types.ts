@@ -207,13 +207,16 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * High impact: recommended 1920×1080px or wider (16:9), full-viewport background. Medium impact: recommended 1400×788px or wider (16:9), in-page width.
+     */
     media?: (number | null) | Media;
   };
   layout?: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[] | null;
   meta?: {
     title?: string | null;
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Recommended: 1200×630px (1.91:1) for social sharing. Maximum file size 12MB; aim for under 500KB.
      */
     image?: (number | null) | Media;
     description?: string | null;
@@ -241,10 +244,13 @@ export interface Project {
   client?: string | null;
   excerpt: string;
   /**
-   * Add project images and mark one as featured for cards and the project page hero.
+   * Add project images and mark one as featured. Recommended: 800×1000px (4:5) for cards; 1600×1000px (16:10) for the project page gallery. Upload the highest resolution available.
    */
   images?:
     | {
+        /**
+         * Recommended: 1600×1000px (16:10) minimum for gallery; 800×1000px (4:5) works for featured cards.
+         */
         image: number | Media;
         /**
          * Only one image can be featured at a time.
@@ -271,7 +277,7 @@ export interface Project {
   meta?: {
     title?: string | null;
     /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     * Recommended: 1200×630px (1.91:1) for social sharing. Maximum file size 12MB; aim for under 500KB.
      */
     image?: (number | null) | Media;
     description?: string | null;
@@ -287,6 +293,8 @@ export interface Project {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Upload JPG, PNG, or WebP. Recommended max width 1920px; keep files under 500KB when possible. Payload generates thumbnail (300px), square (500×500), small–xlarge (600–1920px), and OG (1200×630) variants automatically.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -508,6 +516,9 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
+  /**
+   * Recommended: 1200×800px or wider. Renders at content width; use 3:2 or 16:9 landscape for best results.
+   */
   media: number | Media;
   id?: string | null;
   blockName?: string | null;
@@ -1164,6 +1175,9 @@ export interface Service {
   displayNumber: string;
   title: string;
   icon: 'clock' | 'dollar' | 'check' | 'heart' | 'cube' | 'image' | 'sparkles' | 'pencil' | 'users' | 'layers';
+  /**
+   * Recommended: 1200×800px (3:2). Displayed as a card header image on the services grid.
+   */
   image?: (number | null) | Media;
   features?:
     | {
@@ -2040,7 +2054,7 @@ export interface Homepage {
   headlineAccent: string;
   subheadline: string;
   /**
-   * Full-width background image. Subject centered or right works best.
+   * Recommended: 1920×1080px or wider (16:9). Full-width hero background; subject centered or on the right works best.
    */
   heroImage?: (number | null) | Media;
   heroCta: {
@@ -2089,7 +2103,7 @@ export interface Homepage {
            */
           label: string;
           /**
-           * Optional until media is uploaded in admin or via seed.
+           * Recommended: 600×1000px (3:5 portrait). Optional until media is uploaded in admin or via seed.
            */
           image?: (number | null) | Media;
           isVideo?: boolean | null;
@@ -2127,6 +2141,9 @@ export interface About {
   overline?: string | null;
   headline: string;
   bio: string;
+  /**
+   * Recommended: 900×1200px (3:4 portrait). Displayed in a tall portrait frame on the About page.
+   */
   portrait?: (number | null) | Media;
   credentials?:
     | {
@@ -2173,7 +2190,7 @@ export interface ProjectsPage {
 export interface ServicesPage {
   id: number;
   /**
-   * Wide banner image. Subject on the right works best — copy sits on the left with a gradient overlay.
+   * Recommended: 1920×800px or wider (~2.4:1). Wide banner; subject on the right works best — copy sits on the left with a gradient overlay.
    */
   bannerImage?: (number | null) | Media;
   /**

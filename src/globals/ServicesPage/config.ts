@@ -26,7 +26,7 @@ export const ServicesPage: GlobalConfig = {
               relationTo: 'media',
               admin: {
                 description:
-                  'Wide banner image. Subject on the right works best — copy sits on the left with a gradient overlay.',
+                  'Recommended: 1920×800px or wider (~2.4:1). Wide banner; subject on the right works best — copy sits on the left with a gradient overlay.',
               },
             },
             {

@@ -91,6 +91,12 @@ export const Pages: CollectionConfig<'pages'> = {
             }),
             MetaImageField({
               relationTo: 'media',
+              overrides: {
+                admin: {
+                  description:
+                    'Recommended: 1200×630px (1.91:1) for social sharing. Maximum file size 12MB; aim for under 500KB.',
+                },
+              },
             }),
 
             MetaDescriptionField({}),

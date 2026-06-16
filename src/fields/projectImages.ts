@@ -8,7 +8,8 @@ export const projectImagesField: Field = {
     plural: 'Images',
   },
   admin: {
-    description: 'Add project images and mark one as featured for cards and the project page hero.',
+    description:
+      'Add project images and mark one as featured. Recommended: 800×1000px (4:5) for cards; 1600×1000px (16:10) for the project page gallery. Upload the highest resolution available.',
     initCollapsed: false,
   },
   fields: [
@@ -17,6 +18,10 @@ export const projectImagesField: Field = {
       type: 'upload',
       relationTo: 'media',
       required: true,
+      admin: {
+        description:
+          'Recommended: 1600×1000px (16:10) minimum for gallery; 800×1000px (4:5) works for featured cards.',
+      },
     },
     {
       name: 'isFeatured',

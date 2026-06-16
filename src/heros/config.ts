@@ -63,6 +63,8 @@ export const hero: Field = {
       type: 'upload',
       admin: {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        description:
+          'High impact: recommended 1920×1080px or wider (16:9), full-viewport background. Medium impact: recommended 1400×788px or wider (16:9), in-page width.',
       },
       relationTo: 'media',
       required: true,

@@ -55,7 +55,8 @@ export const Homepage: GlobalConfig = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Full-width background image. Subject centered or right works best.',
+                description:
+                  'Recommended: 1920×1080px or wider (16:9). Full-width hero background; subject centered or on the right works best.',
               },
             },
             link({

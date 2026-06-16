@@ -51,6 +51,9 @@ export const Services: CollectionConfig<'services'> = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
+      admin: {
+        description: 'Recommended: 1200×800px (3:2). Displayed as a card header image on the services grid.',
+      },
     },
     {
       name: 'features',

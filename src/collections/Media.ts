@@ -17,6 +17,10 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  admin: {
+    description:
+      'Upload JPG, PNG, or WebP. Recommended max width 1920px; keep files under 500KB when possible. Payload generates thumbnail (300px), square (500×500), small–xlarge (600–1920px), and OG (1200×630) variants automatically.',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
