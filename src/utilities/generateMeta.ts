@@ -11,10 +11,8 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
   let url = serverUrl + siteMeta.defaultOgImagePath
 
-  if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
-
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+  if (image && typeof image === 'object' && 'url' in image && image.url) {
+    url = serverUrl + image.url
   }
 
   return url
