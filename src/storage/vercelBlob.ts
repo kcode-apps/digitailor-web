@@ -9,19 +9,20 @@ const isProduction = process.env.NODE_ENV === 'production'
  *
  * Requires `BLOB_READ_WRITE_TOKEN` on Vercel (auto-injected when Blob storage
  * is linked to the project). Production deploys fail fast via `validateServerEnv`
- * when the token is missing. `clientUploads` bypasses Vercel's 4.5MB serverless
- * request body limit for admin uploads.
+ * when the token is missing.
  *
- * Dev uploads are not migrated to prod automatically — re-upload media in production
- * or run a dedicated blob migration before go-live.
+ * Server-side uploads only (no clientUploads). Admin guidance is ≤500KB per file,
+ * well under Vercel's 4.5MB function body limit. Client uploads re-fetch the blob
+ * and regenerate all image sizes on save, which is slow and can hang on serverless.
  */
 export const vercelBlobStoragePlugin: Plugin = vercelBlobStorage({
   enabled: isProduction,
+  alwaysInsertFields: true,
   collections: {
     media: {
       prefix: 'media',
+      disablePayloadAccessControl: true,
     },
   },
   token: process.env.BLOB_READ_WRITE_TOKEN,
-  clientUploads: isProduction ? true : undefined,
 })
