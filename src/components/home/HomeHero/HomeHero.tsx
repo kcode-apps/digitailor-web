@@ -31,8 +31,9 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ homepage }) => {
           />
         ) : null}
 
-        <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/55 to-cream/10 lg:from-cream/92 lg:via-cream/45 lg:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cream/90 via-transparent to-cream/20" />
+        {/* Localized scrims — text column only; right side of hero stays clear */}
+        <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-cream/88 via-cream/45 to-transparent sm:via-cream/35 md:w-[75%] md:from-cream/85 md:via-cream/30 lg:w-[52%] lg:from-cream/82 lg:via-cream/20" />
+        <div className="absolute bottom-0 left-0 h-32 w-full bg-gradient-to-t from-cream/75 via-cream/20 to-transparent sm:h-40 md:max-w-2xl lg:h-44 lg:max-w-xl lg:from-cream/70" />
       </div>
 
       <div className="container relative z-10 flex min-h-[calc(100svh-5rem)] flex-col justify-between py-10 md:py-14 lg:py-16">
